@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Contact = () => {
+    const { t } = useTranslation();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -13,17 +15,17 @@ const Contact = () => {
       <div className="container">
         <div className="contact-grid fade-in">
           <div className="contact-info">
-            <h2>Connect</h2>
+            <h2>{t('contact_title')}</h2>
             <div className="info-item">
-              <h4>Email</h4>
+              <h4>{t('contact_email')}</h4>
               <p>hello@minimal.com</p>
             </div>
             <div className="info-item">
-              <h4>Phone</h4>
+              <h4>{t('contact_phone')}</h4>
               <p>+1 234 567 890</p>
             </div>
             <div className="info-item">
-              <h4>Location</h4>
+              <h4>{t('contact_location')}</h4>
               <p>New York, NY</p>
             </div>
           </div>
@@ -34,18 +36,18 @@ const Contact = () => {
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <input type="text" placeholder=" " required />
-                <label>Name</label>
+                <label>{t('form_name')}</label>
               </div>
               <div className="form-group">
                 <input type="email" placeholder=" " required />
-                <label>Email</label>
+                <label>{t('form_email')}</label>
               </div>
               <div className="form-group">
                 <textarea rows="4" placeholder=" " required></textarea>
-                <label>Message</label>
+                <label>{t('form_message')}</label>
               </div>
               <button type="submit" className="submit-btn">
-                Send
+                {t('form_send')}
               </button>
             </form>
           </div>

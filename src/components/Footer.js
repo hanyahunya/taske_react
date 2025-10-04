@@ -1,10 +1,17 @@
-import React from 'react';
+// src/components/Footer.js
 
-const Footer = () => {
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
+// isAuthPage prop을 받도록 수정
+const Footer = ({ isAuthPage }) => {
+  const { t } = useTranslation();
+
   return (
-    <footer>
+    // isAuthPage가 true이면 'footer-slim' 클래스 추가
+    <footer className={isAuthPage ? 'footer-slim' : ''}>
       <p>
-        © 2025 Minimal Studio — Designed by{' '}
+        {t('footer_text')}{' '}
         <a
           href="https://www.tooplate.com"
           target="_blank"

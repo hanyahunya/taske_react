@@ -1,6 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+  const { t } = useTranslation();
+  
   const handleExploreClick = (e) => {
     e.preventDefault();
     document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
@@ -17,10 +20,10 @@ const Hero = () => {
 
       <div className="hero-decoration"></div>
       <div className="hero-content">
-        <h1>Less is More</h1>
-        <p className="subtitle">Minimalist Design Studio</p>
+        <h1>{t('hero_title')}</h1>
+        <p className="subtitle">{t('hero_subtitle')}</p>
         <a href="#about" className="cta-button" onClick={handleExploreClick}>
-          EXPLORE
+          {t('hero_button')}
         </a>
       </div>
     </section>

@@ -1,6 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Services = () => {
+  const { t } = useTranslation();
+
   const handleTagClick = (e) => {
     e.preventDefault();
     document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
@@ -10,57 +13,48 @@ const Services = () => {
     <section id="services" className="services">
       <div className="container">
         <div className="services-header fade-in">
-          <h2>What We Do</h2>
+          <h2>{t('services_title')}</h2>
         </div>
 
         <div className="asymmetric-grid fade-in">
           <div className="service-large">
-            <h3>Brand Identity</h3>
-            <p>
-              Creating distinctive visual languages that communicate your essence through
-              simplicity. We develop comprehensive brand systems that stand the test of time.
-            </p>
+            <h3>{t('brand_identity_title')}</h3>
+            <p>{t('brand_identity_desc')}</p>
             <a href="#contact" className="service-tag" onClick={handleTagClick}>
-              View Work
+              {t('view_work')}
             </a>
           </div>
           <div className="service-small">
             <div className="service-number">01</div>
-            <h4>Strategy First</h4>
+            <h4>{t('strategy_first')}</h4>
           </div>
         </div>
 
         <div className="asymmetric-grid reverse fade-in">
           <div className="service-small">
             <div className="service-number">02</div>
-            <h4>Digital Native</h4>
+            <h4>{t('digital_native')}</h4>
           </div>
           <div className="service-large">
-            <h3>Web Design</h3>
-            <p>
-              Crafting digital experiences that prioritize clarity and usability. Every pixel
-              serves a purpose in our pursuit of functional beauty.
-            </p>
+            <h3>{t('web_design_title')}</h3>
+            <p>{t('web_design_desc')}</p>
             <a href="#contact" className="service-tag" onClick={handleTagClick}>
-              Explore
+              {t('explore')}
             </a>
           </div>
         </div>
 
         <div className="asymmetric-grid fade-in">
           <div className="service-large">
-            <h3>Art Direction</h3>
-            <p>
-              Guiding visual narratives with restraint and intention. We believe the most
-              powerful statements are often the quietest ones.
-            </p>
+            <h3>{t('art_direction_title')}</h3>
+            <p>{t('art_direction_desc')}</p>
             <a href="#contact" className="service-tag" onClick={handleTagClick}>
-              Discover
+              {t('discover')}
             </a>
           </div>
           <div className="service-small">
             <div className="service-number">03</div>
-            <h4>Vision Focused</h4>
+            <h4>{t('vision_focused')}</h4>
           </div>
         </div>
       </div>

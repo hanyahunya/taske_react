@@ -1255,6 +1255,21 @@ https://www.tooplate.com/view/2141-minimal-white
             font-weight: 500;
         }
 
+        /* 푸터 영역을 줄이는 스타일 */
+        footer.footer-slim {
+            padding: 30px 20px;
+            border-top-width: 1px;
+        }
+
+        /* 회원가입 폼 안내 문구 스타일 */
+        .form-notice {
+            font-size: 13px;
+            color: #888;
+            text-align: left;
+            margin-top: -20px; /* 입력 필드와의 간격 조정 */
+            margin-bottom: 30px;
+        }
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -1527,4 +1542,349 @@ https://www.tooplate.com/view/2141-minimal-white
                 animation: none !important;
                 transition: none !important;
             }
+        }
+
+        /* Navigation Layout Overrides */
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .nav-left, .nav-right {
+            flex: 1;
+        }
+
+        .nav-left {
+            /* 로고가 왼쪽 공간을 차지 */
+            flex: 1; 
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .nav-right {
+            /* 오른쪽 컨트롤이 오른쪽 공간 차지 */
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        /* 데스크탑에서만 보이는 링크 */
+        .desktop-links {
+            display: flex;
+            justify-content: center;
+            /* 중앙 링크는 내용만큼의 공간만 차지 */
+            flex: 0 1 auto; 
+        }
+
+        /* 모바일에서만 보이는 링크 (전체화면) */
+        .mobile-links {
+            display: none; /* 평소엔 숨김 */
+        }
+
+        /* 언어 변경 + 햄버거 메뉴 컨테이너 */
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+
+        /* Language Switcher - 박스 디자인 복원 */
+        .language-switcher {
+            position: relative;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .language-switcher button {
+            background: none;
+            border: 1px solid #000; /* 박스 형태 테두리 */
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 8px 16px;
+            transition: all 0.3s ease;
+            min-width: 90px;
+            text-align: center;
+        }
+
+        .language-switcher button:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .language-switcher ul {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: #fff;
+            border: 1px solid #000;
+            list-style: none;
+            margin: 0;
+            padding: 5px 0;
+            min-width: 120px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 1002;
+        }
+
+        .language-switcher ul li a {
+            display: block;
+            padding: 10px 20px;
+            color: #000;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .language-switcher ul li a:hover {
+                background: #f0f0f0;
+        }
+
+
+        /* Mobile Responsive Overrides */
+        @media (max-width: 768px) {
+            /* 데스크탑 링크 숨기기 */
+            .desktop-links {
+                display: none;
+            }
+
+            /* 햄버거 메뉴 보이기 */
+            .menu-toggle {
+                display: flex;
+            }
+
+            /* 모바일 링크 활성화 시 보이기 */
+            .mobile-links.active {
+                display: flex;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                z-index: 1000;
+            }
+        }   
+
+        /* Auth Page Styles */
+        .auth-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 120px 20px 60px;
+        }
+
+        .auth-form {
+        width: 100%;
+        max-width: 450px;
+        padding: 60px;
+        border: 1px solid #000;
+        text-align: center;
+        }
+
+        .auth-form h2 {
+        font-size: 36px;
+        font-weight: 100;
+        letter-spacing: -1px;
+        margin-bottom: 50px;
+        }
+
+        /* Nav Auth Link Styles */
+        .nav-right-container {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        }
+
+        /* Nav Auth Link Styles */
+        .nav-auth-link {
+            color: #000;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 8px 4px;
+            white-space: nowrap;
+        }
+
+        .nav-auth-link:hover {
+            font-weight: 700;
+        }
+
+
+        /* Mobile Responsive Overrides */
+        @media (max-width: 1000px) {
+            .desktop-links {
+                display: none;
+            }
+            .nav-left, .nav-right {
+            flex: initial; /* flex 비율 초기화하여 space-between으로 정렬 */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-auth-link {
+                display: none;
+            }
+            /* 모바일에서는 햄버거 메뉴를 항상 보여주기 원한다면 아래를 수정 */
+            .menu-toggle {
+                display: flex;
+            }
+        }
+        /* Mobile Auth Links in Menu */
+        .mobile-auth a {
+            padding: 10px 20px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+
+        .social-login-container {
+            margin-top: 40px;
+        }
+
+        .social-login-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        /* 구분선 양쪽의 라인 */
+        .social-login-divider::before,
+        .social-login-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #eee;
+        }
+
+        .social-login-divider:not(:empty)::before {
+            margin-right: .5em;
+        }
+
+        .social-login-divider:not(:empty)::after {
+            margin-left: .5em;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; /* 동그란 모양 */
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #000;
+            transform: translateY(-3px);
+        }
+
+        .social-btn.google:hover {
+            color: #DB4437; /* 구글 브랜드 색상 */
+        }
+
+        /* --- Login Page Additions --- */
+
+        .form-group-wrapper {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .forgot-password-link {
+            position: absolute;
+            right: 0;
+            bottom: -20px;
+            font-size: 13px;
+            color: #888;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password-link:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .signup-prompt {
+            margin: 30px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .signup-prompt a {
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signup-prompt a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* --- Signup Page Additions --- */
+
+        .login-prompt {
+            margin: 30px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-prompt a {
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Signup Success Page Styles --- */
+
+        .signup-success-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* submit-btn 스타일을 Link 태그에도 적용 가능하도록 수정 */
+        .submit-btn {
+            display: inline-block; /* a 태그에 적용하기 위해 */
+            text-decoration: none; /* a 태그의 밑줄 제거 */
         }
