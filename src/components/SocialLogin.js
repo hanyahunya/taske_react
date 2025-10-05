@@ -7,9 +7,29 @@ const SocialLogin = () => {
   const { t } = useTranslation();
 
   const handleGoogleLogin = () => {
-    // TODO: 구글 로그인 로직 구현
-    // 예: window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-    alert('Google 로그인 처리');
+    // 1. 예측 불가능한 랜덤 문자열 생성
+    const state = Math.random().toString(36).substring(2);
+    // 2. 생성된 state 값을 sessionStorage에 저장
+    sessionStorage.setItem('oauth_state', state);
+
+    const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const redirectUri = 'http://localhost:3000/oauth2/callback/google'; 
+    const scope = 'email profile';
+    const responseType = 'code';
+    const access_type= 'offline';
+
+    const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+    authUrl.searchParams.set('client_id', clientId);
+    authUrl.searchParams.set('redirect_uri', redirectUri);
+    authUrl.searchParams.set('scope', scope);
+    authUrl.searchParams.set('response_type', responseType);
+    authUrl.searchParams.set('access_type', access_type);
+    // 3. 생성된 state 값을 URL에 포함
+    authUrl.searchParams.set('state', state);
+    authUrl.searchParams.set('prompt', 'consent');
+    
+    
+    window.location.href = authUrl.toString();
   };
 
   return (
@@ -22,11 +42,10 @@ const SocialLogin = () => {
           type="button"
           className="social-btn google"
           onClick={handleGoogleLogin}
-          aria-label="Google a"
+          aria-label="Google Login"
         >
           <FontAwesomeIcon icon={faGoogle} />
         </button>
-        {/* 다른 소셜 로그인 버튼 추가될 공간 */}
       </div>
     </div>
   );

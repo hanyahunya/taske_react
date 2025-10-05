@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import VerificationPage from './pages/VerificationPage';
 import ServicePage from './pages/ServicePage'; // 서비스 페이지 import
+import OAuthCallback from './pages/OAuthCallback'; // 새로 만든 콜백 페이지 import
 import { useTranslation } from 'react-i18next';
 import api from './api/axiosConfig';
 
@@ -123,6 +124,7 @@ function AppContent() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/verify/:verificationCode" element={<VerificationPage />} />
         <Route path="/service" element={<ServicePage />} /> {/* 서비스 페이지 라우트 추가 */}
+        <Route path="/oauth2/callback/:provider" element={<OAuthCallback />} />
       </Routes>
     </AppLayout>
   );
