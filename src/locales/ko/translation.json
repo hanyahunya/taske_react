@@ -77,5 +77,15 @@
   "go_to_login": "로그인하기",
   "signup_success_title": "가입을 축하합니다!",
   "signup_success_message": "계정 활성화를 위해 {{email}} (으)로 인증 메일을 보냈습니다. 받은 편지함을 확인해주세요.",
-  "go_to_login_page": "로그인 페이지로 가기"
+  "go_to_login_page": "로그인 페이지로 가기",
+  "service_page_title": "내 작업 목록",
+  "service_page_no_tasks": "아직 생성된 작업이 없습니다. 첫 작업을 만들어보세요!",
+  "service_page_add_task_button": "새 작업 만들기",
+  "task_add_title": "새 작업 만들기",
+  "task_add_load_error": "모듈을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.",
+  "task_add_no_modules": "사용 가능한 모듈이 없습니다.",
+  "task_triggers": "트리거 (언제)",
+  "task_actions": "액션 (무엇을)",
+  "task_add_no_capability": "사용 가능한 기능이 없습니다.",
+  "task_add_service_placeholder": "여기에서 선택된 트리거와 액션의 세부 설정을 합니다."
 }

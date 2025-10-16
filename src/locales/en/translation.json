@@ -77,5 +77,15 @@
   "go_to_login": "Log in",
   "signup_success_title": "Welcome!",
   "signup_success_message": "We've sent a verification email to {{email}}. Please check your inbox to activate your account.",
-  "go_to_login_page": "Go to Login Page"
+  "go_to_login_page": "Go to Login Page",
+  "service_page_title": "My Tasks",
+  "service_page_no_tasks": "You don't have any tasks yet. Let's create your first one!",
+  "service_page_add_task_button": "Create New Task",
+  "task_add_title": "Create New Task",
+  "task_add_load_error": "Failed to load modules. Please try again later.",
+  "task_add_no_modules": "No available modules.",
+  "task_triggers": "Triggers (When)",
+  "task_actions": "Actions (Do)",
+  "task_add_no_capability": "No capabilities available.",
+  "task_add_service_placeholder": "Configure the details for the selected trigger and action here."
 }

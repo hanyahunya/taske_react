@@ -24,9 +24,11 @@ const OAuthCallback = () => {
   };
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const authorizationCode = searchParams.get('code');
-    const returnedState = searchParams.get('state');
+     const hashParams = new URLSearchParams(location.hash.substring(1));
+
+    const authorizationCode = hashParams.get('code');
+    const returnedState = hashParams.get('state');
+    const idToken = hashParams.get('id_token'); // id_token도 가져옵니다.
 
     const storedState = sessionStorage.getItem('oauth_state');
     sessionStorage.removeItem('oauth_state'); 
@@ -38,7 +40,7 @@ const OAuthCallback = () => {
     }
 
     if (authorizationCode) {
-      sendCodeToBackend(authorizationCode);
+      sendCodeToBackend(authorizationCode, idToken);
     } else {
       alert('구글 인증에 실패했습니다.');
       navigate('/login');
@@ -46,13 +48,21 @@ const OAuthCallback = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
-  const sendCodeToBackend = async (code) => {
+  const sendCodeToBackend = async (code, idToken) => {
     // 현재 언어 설정을 가져옵니다.
     const locale = getLocaleForAPI(i18n.language);
 
+    const nonce = sessionStorage.getItem('oauth_nonce');
+    sessionStorage.removeItem('oauth_nonce');
+
     try {
       // 요청 body에 code와 locale을 함께 담아 보냅니다.
-      const response = await api.post(`/auth/login/${provider}`, { code, locale });
+      const response = await api.post(`/auth/login/${provider}`, { 
+        code, 
+        idToken,
+        nonce,
+        locale 
+      });
 
       if (response.status === 200) {
         const authHeader = response.headers['authorization'];

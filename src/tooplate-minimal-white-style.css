@@ -16,6 +16,21 @@ https://www.tooplate.com/view/2141-minimal-white
             box-sizing: border-box;
         }
 
+        html, body, #root {
+            height: 100%;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* 최소 높이를 뷰포트의 100%로 설정 */
+        }
+
+        .main-content {
+            flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+        }
+
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
@@ -1257,8 +1272,13 @@ https://www.tooplate.com/view/2141-minimal-white
 
         /* 푸터 영역을 줄이는 스타일 */
         footer.footer-slim {
-            padding: 30px 20px;
-            border-top-width: 1px;
+            padding: 20px 20px; /* 상하 여백을 30px에서 20px으로 줄입니다. */
+            border-top-width: 1px; /* 상단 테두리 두께를 1px로 유지합니다. */
+        }
+
+        footer.footer-slim::before,
+        footer.footer-slim::after {
+            display: none;
         }
 
         /* 회원가입 폼 안내 문구 스타일 */
@@ -1887,4 +1907,240 @@ https://www.tooplate.com/view/2141-minimal-white
         .submit-btn {
             display: inline-block; /* a 태그에 적용하기 위해 */
             text-decoration: none; /* a 태그의 밑줄 제거 */
+        }
+
+
+        /* --- Add Task Page Styles --- */
+
+        .module-container {
+            border: 1px solid #eee;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+        }
+
+        .module-container h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .capability-section h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .capability-section ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .capability-item {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            background-color: #f9f9f9;
+            font-size: 14px;
+        }
+
+        .capability-item strong {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 600px) {
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* --- ↓↓↓ '새로운 작업 추가 페이지 스타일' 부분을 아래 코드로 교체 ↓↓↓ --- */
+
+        .page-container {
+            max-width: 1600px;
+            margin: 0;
+            padding: 100px 40px 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 100;
+            letter-spacing: -1px;
+            margin-bottom: 50px;
+        }
+
+        .task-creation-container {
+            display: flex;
+            gap: 30px;
+            /* 자식 요소들을 위쪽 기준으로 정렬합니다. */
+            align-items: flex-start;
+        }
+
+        .selectors-container {
+            display: flex;
+            gap: 20px;
+            width: 600px;
+            flex-shrink: 0;
+            align-self: flex-start;
+            /* --- ✅ 핵심 수정: 자식 요소(목록창)들이 위쪽을 기준으로 정렬되도록 변경 --- */
+            align-items: flex-start;
+        }
+
+        .capability-selector {
+            width: 50%;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            /* --- ✅ 핵심 수정 1: 최대 높이를 오른쪽 컨테이너와 동일하게 설정 --- */
+            max-height: calc(100vh - 230px); /* service-container와 동일한 높이로 최대치를 제한 */
+        }
+
+        .capability-selector h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            /* --- ✅ 핵심 수정 2: 내용이 max-height를 넘으면 스크롤 생성 --- */
+            overflow-y: auto;
+        }
+
+        .module-accordion .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .module-accordion .module-header:hover {
+            background-color: #f5f5f5;
+        }
+
+        .module-header .arrow {
+            font-size: 20px;
+            transform: rotate(0deg);
+            transition: transform 0.3s ease;
+        }
+
+        .module-header .arrow.open {
+            transform: rotate(90deg);
+        }
+
+        .capability-list {
+            list-style: none;
+            padding: 10px 5px 5px 5px;
+            margin: 0;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .capability-list-item {
+            padding: 12px 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 14px;
+        }
+
+        .capability-list-item:hover {
+            background-color: #e9e9e9;
+        }
+
+        .capability-list-item .capability-description {
+            margin-top: 4px;
+            font-size: 12px;
+            color: #777;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+        }
+
+        .capability-list-item.empty {
+            color: #999;
+            cursor: default;
+        }
+
+        .capability-list-item.empty:hover {
+            background-color: transparent;
+        }
+
+        .service-container {
+            flex-grow: 1;
+            padding: 20px;
+            background: #fdfdfd;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            color: #aaa;
+            display: flex;
+            flex-direction: column;
+            /* 오른쪽 컨테이너는 항상 고정된 최대 높이를 가집니다. */
+            height: calc(100vh - 230px); 
+        }
+
+        /* --- Mobile Responsive for Add Task Page --- */
+        @media (max-width: 992px) {
+            .task-creation-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .selectors-container {
+                width: 100%;
+                max-width: none;
+            }
+            .capability-selector,
+            .service-container {
+                height: 300px;
+                min-height: 300px;
+                max-height: 300px; /* 모바일에서는 최대 높이도 고정 */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .selectors-container {
+                flex-direction: column;
+            }
+            .capability-selector {
+                width: 100%;
+            }
+            .page-container {
+                padding: 80px 20px 20px;
+            }
         }

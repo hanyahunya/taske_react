@@ -77,5 +77,15 @@
   "go_to_login": "ログイン",
   "signup_success_title": "登録ありがとうございます！",
   "signup_success_message": "{{email}}に認証メールを送信しました。受信トレイを確認してアカウントを有効にしてください。",
-  "go_to_login_page": "ログインページへ"
+  "go_to_login_page": "ログインページへ",
+  "service_page_title": "マイタスク",
+  "service_page_no_tasks": "まだ作成されたタスクがありません。最初のタスクを作成してみましょう！",
+  "service_page_add_task_button": "新しいタスクを作成",
+  "task_add_title": "新しいタスクを作成",
+  "task_add_load_error": "モジュールの読み込みに失敗しました。後でもう一度お試しください。",
+  "task_add_no_modules": "利用可能なモジュールがありません。",
+  "task_triggers": "トリガー (いつ)",
+  "task_actions": "アクション (何を)",
+  "task_add_no_capability": "利用可能な機能がありません。",
+  "task_add_service_placeholder": "ここで選択したトリガーとアクションの詳細を設定します。"
 }
