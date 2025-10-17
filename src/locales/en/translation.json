@@ -87,5 +87,18 @@
   "task_triggers": "Triggers (When)",
   "task_actions": "Actions (Do)",
   "task_add_no_capability": "No capabilities available.",
-  "task_add_service_placeholder": "Configure the details for the selected trigger and action here."
+  "task_add_service_placeholder": "Configure the details for the selected trigger and action here.",
+  "task_add_select_capability_prompt": "Please select a {{step}}.",
+  "step_trigger": "Step 1: Select Trigger",
+  "step_action": "Step 2: Select Action",
+  "button_back_trigger": "Back (Trigger)",
+  "button_next_action": "Next (Select Action)",
+  "button_save_task": "Save Task",
+  "button_add_action": "Add Action",
+  "button_back_action": "Back (Step {{index}})",
+  "step_action_index": "Step {{index}}: Select Action",
+  "available_variables_title": "Available Variables",
+  "no_available_variables": "No available variables.",
+  "step_trigger_short": "Trigger",
+  "step_action_short": "Action {{index}}"
 }

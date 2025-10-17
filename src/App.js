@@ -49,12 +49,12 @@ const InitialAuthCheck = (props) => {
 
 
 // Nav, children(main), Footer를 div.app-container로 감쌉니다.
-const AppLayout = ({ children, isScrolled, activeSection }) => (
+const AppLayout = ({ children, isScrolled, activeSection, showFooter }) => ( // 1. showFooter prop 추가
   <div className="app-container">
     <Nav isScrolled={isScrolled} activeSection={activeSection} />
     {/* 메인 콘텐츠를 <main> 태그로 감싸고 클래스를 부여합니다. */}
     <main className="main-content">{children}</main>
-    <Footer />
+    {showFooter && <Footer />} {/* 2. showFooter가 true일 때만 렌더링 */}
   </div>
 );
 
@@ -68,6 +68,12 @@ function AppContent() {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
   
+  // --- ✅ 1. 푸터를 표시할 경로 목록 정의 ---
+  const showFooterPaths = ['/', '/login', '/signup'];
+
+  // --- ✅ 2. 현재 경로가 목록에 포함되는지 확인 ---
+  const shouldShowFooter = showFooterPaths.includes(location.pathname);
+
   useEffect(() => {
     if (!isMainPage) {
       setIsScrolled(window.scrollY > 50);
@@ -80,8 +86,12 @@ function AppContent() {
   }, [i18n.language]);
 
   return (
-    // --- ✅ 2. AppLayout에서 isAuthPage prop 제거 ---
-    <AppLayout isScrolled={isScrolled} activeSection={activeSection}>
+    // --- ✅ 3. AppLayout에 showFooter prop 전달 ---
+    <AppLayout 
+      isScrolled={isScrolled} 
+      activeSection={activeSection} 
+      showFooter={shouldShowFooter} 
+    >
       <Routes>
         <Route
           path="/"

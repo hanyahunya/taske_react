@@ -1966,12 +1966,14 @@ https://www.tooplate.com/view/2141-minimal-white
         }
 
 
-        /* --- ↓↓↓ '새로운 작업 추가 페이지 스타일' 부분을 아래 코드로 교체 ↓↓↓ --- */
-
         .page-container {
-            max-width: 1600px;
-            margin: 0;
-            padding: 100px 40px 40px;
+            /* --- ✅ 핵심 수정 1: 헤더와 동일한 너비 및 중앙 정렬 적용 --- */
+            max-width: 1200px; /* 헤더의 .nav-container와 유사한 최대 너비 */
+            margin: 0 auto;    /* 중앙 정렬 */
+            padding: 100px 20px 40px; /* 좌우 패딩을 nav-container와 유사하게 조정 */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
         .page-title {
@@ -1980,34 +1982,28 @@ https://www.tooplate.com/view/2141-minimal-white
             font-weight: 100;
             letter-spacing: -1px;
             margin-bottom: 50px;
+            flex-shrink: 0;
         }
 
         .task-creation-container {
             display: flex;
-            gap: 30px;
-            /* 자식 요소들을 위쪽 기준으로 정렬합니다. */
-            align-items: flex-start;
+            gap: 30px; /* 목록창과 서비스 컨테이너 사이 간격 */
+            flex-grow: 1;
+            align-items: flex-start; /* 높이가 서로 영향 주지 않도록 */
         }
 
-        .selectors-container {
-            display: flex;
-            gap: 20px;
-            width: 600px;
-            flex-shrink: 0;
-            align-self: flex-start;
-            /* --- ✅ 핵심 수정: 자식 요소(목록창)들이 위쪽을 기준으로 정렬되도록 변경 --- */
-            align-items: flex-start;
-        }
+        /* selectors-container 제거됨 */
 
         .capability-selector {
-            width: 50%;
+            /* --- ✅ 핵심 수정 2: 고정 너비 설정 및 최대 높이 유지 --- */
+            width: 350px; /* 목록창 고정 너비 */
+            flex-shrink: 0; /* 너비 고정 */
             background: #f9f9f9;
             padding: 20px;
             border-radius: 8px;
             display: flex;
             flex-direction: column;
-            /* --- ✅ 핵심 수정 1: 최대 높이를 오른쪽 컨테이너와 동일하게 설정 --- */
-            max-height: calc(100vh - 230px); /* service-container와 동일한 높이로 최대치를 제한 */
+            max-height: calc(88vh - 230px); /* 최대 높이 제한 */
         }
 
         .capability-selector h4 {
@@ -2023,10 +2019,11 @@ https://www.tooplate.com/view/2141-minimal-white
             display: flex;
             flex-direction: column;
             gap: 10px;
-            /* --- ✅ 핵심 수정 2: 내용이 max-height를 넘으면 스크롤 생성 --- */
-            overflow-y: auto;
+            overflow-y: auto; /* 내용 많으면 스크롤 */
+            flex-grow: 1; /* 남은 공간 채우기 (스크롤 영역 확보) */
         }
 
+        /* ... (ModuleAccordion, capability-list, capability-list-item 스타일은 이전과 동일하게 유지) ... */
         .module-accordion .module-header {
             display: flex;
             justify-content: space-between;
@@ -2076,6 +2073,10 @@ https://www.tooplate.com/view/2141-minimal-white
             transition: background-color 0.2s ease;
             font-size: 14px;
         }
+        .capability-list-item.selected { /* 선택된 항목 스타일 추가 */
+            background-color: #e0e0e0;
+            font-weight: 600;
+        }
 
         .capability-list-item:hover {
             background-color: #e9e9e9;
@@ -2102,45 +2103,233 @@ https://www.tooplate.com/view/2141-minimal-white
             background-color: transparent;
         }
 
+
         .service-container {
-            flex-grow: 1;
+            flex-grow: 1; /* 남은 가로 공간 모두 차지 */
             padding: 20px;
-            background: #fdfdfd;
-            border: 1px dashed #ddd;
+            background: #f9f9f9; /* ✅ 1. 배경색을 #fdfdfd -> #f9f9f9로 변경 (왼쪽과 통일) */
+            border: 1px solid #ccc; /* ✅ 2. 테두리를 더 진하고 실선으로 변경 */
             border-radius: 8px;
             color: #aaa;
             display: flex;
             flex-direction: column;
-            /* 오른쪽 컨테이너는 항상 고정된 최대 높이를 가집니다. */
-            height: calc(100vh - 230px); 
+            height: calc(88vh - 230px); /* 고정 최대 높이 */
         }
+
+        /* --- ✅ 핵심 수정 3: 단계 이동 버튼 스타일 --- */
+        .step-navigation {
+            display: flex;
+            justify-content: space-between; /* 버튼 양 끝 정렬 */
+            margin-top: 30px; /* 위쪽 여백 */
+            padding-top: 20px; /* 위쪽 여백 */
+            border-top: 1px solid #eee; /* 구분선 */
+        }
+
+        .step-button {
+            padding: 12px 30px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #000;
+            font-size: 12px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            text-decoration: none; /* Link 태그 사용 대비 */
+        }
+
+        .step-button:hover {
+            background: transparent;
+            color: #000;
+        }
+
+        .step-button.back {
+            background: #fff;
+            color: #000;
+        }
+        .step-button.back:hover {
+            background: #eee;
+        }
+
 
         /* --- Mobile Responsive for Add Task Page --- */
         @media (max-width: 992px) {
+            .page-container {
+                max-width: none; /* 모바일에서는 최대 너비 제한 해제 */
+            }
             .task-creation-container {
                 flex-direction: column;
                 align-items: stretch;
             }
-            .selectors-container {
-                width: 100%;
-                max-width: none;
+            .capability-selector {
+                width: 100%; /* 모바일에서는 너비 100% */
+                max-height: 300px; /* 모바일에서는 최대 높이 고정 */
             }
-            .capability-selector,
             .service-container {
-                height: 300px;
                 min-height: 300px;
-                max-height: 300px; /* 모바일에서는 최대 높이도 고정 */
+                height: auto;
             }
         }
 
+        /* 600px 미만은 이전과 동일 */
         @media (max-width: 600px) {
-            .selectors-container {
-                flex-direction: column;
-            }
-            .capability-selector {
-                width: 100%;
-            }
             .page-container {
                 padding: 80px 20px 20px;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        /* --- Add Task Page Wrapper & Variables Sidebar --- */
+        .add-task-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            flex-grow: 1; /* ✅ page-container의 flex-column 내부에서 남은 공간 차지 */
+            min-height: 0; /* ✅ flexbox 자식이 부모를 넘어서는 것을 방지 */
+        }
+
+        /* ✅ 메인 컨텐츠 영역 (목록 + 설정 + 버튼)을 묶는 래퍼 */
+        .add-task-main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* ✅ flexbox 자식이 부모를 넘어서는 것을 방지 */
+        }
+
+        .available-vars-sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            height: calc(88vh - 230px); /* capability-selector와 동일한 높이 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .available-vars-sidebar h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+
+        .vars-list {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .vars-list p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .var-item {
+            margin-bottom: 15px;
+        }
+
+        .var-item code {
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            word-break: break-all; /* 긴 변수명 줄바꿈 */
+        }
+
+        .var-item p {
+            font-size: 12px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* --- Mobile Responsive for new layout --- */
+        @media (max-width: 992px) {
+            .add-task-wrapper {
+                flex-direction: column-reverse; /* 모바일에선 변수 목록을 하단으로 */
+            }
+            .available-vars-sidebar {
+                width: 100%;
+                max-height: 300px; /* capability-selector와 동일하게 */
+                height: auto;
+                /* vh 기반 높이 제거 */
+            }
+
+            /* 모바일에서 메인 컨텐츠 영역(.add-task-main-content)은
+            부모(.add-task-wrapper)가 column이 되면서 자연스럽게 수직 정렬됩니다.
+            .task-creation-container는 이미 모바일 반응형(column) 설정이 있습니다.
+            */
+        }
+
+
+
+        /* --- Step Indicator (Task Add Page) --- */
+        .step-indicator-container {
+            flex-grow: 1; /* ✅ 버튼 사이의 남은 공간을 모두 차지 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 0 20px;
+            overflow-x: auto; /* 스텝이 매우 많아질 경우 가로 스크롤 */
+            height: 100%;
+            min-width: 0; /* flex-shrink 방지 */
+        }
+
+        .step-indicator-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            min-width: 40px; /* ⏹️ 기본 (비활성) 크기 */
+            height: 40px;
+            background: #fff;
+            border: 2px solid #000;
+            color: #000;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .step-indicator-item.active {
+            background: #000;
+            color: #fff;
+            min-width: 120px; /* ✅ 활성 스텝은 더 길게 */
+        }
+
+        .step-indicator-item:not(.active):hover {
+            background: #f0f0f0; /* 비활성 스텝 호버 */
+        }
+
+        /* --- Responsive for Step Indicator --- */
+        @media (max-width: 992px) {
+            .step-indicator-item {
+                min-width: 30px;
+                height: 30px;
+                font-size: 11px;
+                padding: 5px;
+            }
+            .step-indicator-item.active {
+                min-width: 80px; /* 모바일에서 활성 스텝 크기 */
+            }
+            /* 모바일에서는 비활성 스텝의 텍스트를 숨깁니다 */
+            .step-indicator-item:not(.active) span {
+                display: none;
             }
         }

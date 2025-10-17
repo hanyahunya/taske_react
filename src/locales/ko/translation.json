@@ -87,5 +87,18 @@
   "task_triggers": "트리거 (언제)",
   "task_actions": "액션 (무엇을)",
   "task_add_no_capability": "사용 가능한 기능이 없습니다.",
-  "task_add_service_placeholder": "여기에서 선택된 트리거와 액션의 세부 설정을 합니다."
+  "task_add_service_placeholder": "여기에서 선택된 트리거와 액션의 세부 설정을 합니다.",
+  "task_add_select_capability_prompt": "{{step, select, trigger {트리거를} action {액션을}} 선택해주세요.",
+  "step_trigger": "1단계: 트리거 선택",
+  "step_action": "2단계: 액션 선택",
+  "button_back_trigger": "이전 (트리거)",
+  "button_next_action": "다음 (액션 선택)",
+  "button_save_task": "작업 저장",
+  "button_add_action": "액션 추가",
+  "available_variables_title": "사용 가능한 변수",
+  "no_available_variables": "사용 가능한 변수가 없습니다.",
+  "button_back_action": "이전 ({{index}}단계)",
+  "step_action_index": "{{index}}단계: 액션 선택",
+  "step_trigger_short": "트리거",
+  "step_action_short": "액션 {{index}}"
 }

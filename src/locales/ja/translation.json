@@ -87,5 +87,18 @@
   "task_triggers": "トリガー (いつ)",
   "task_actions": "アクション (何を)",
   "task_add_no_capability": "利用可能な機能がありません。",
-  "task_add_service_placeholder": "ここで選択したトリガーとアクションの詳細を設定します。"
+  "task_add_service_placeholder": "ここで選択したトリガーとアクションの詳細を設定します。",
+  "task_add_select_capability_prompt": "{{step, select, trigger {トリガー} action {アクション}}を選択してください。",
+  "step_trigger": "ステップ1：トリガーを選択",
+  "step_action": "ステップ2：アクションを選択",
+  "button_back_trigger": "戻る (トリガー)",
+  "button_next_action": "次へ (アクション選択)",
+  "button_save_task": "タスクを保存",
+  "button_add_action": "アクションを追加",
+  "button_back_action": "戻る (ステップ{{index}})",
+  "step_action_index": "ステップ{{index}}：アクションを選択",
+  "available_variables_title": "利用可能な変数",
+  "no_available_variables": "利用可能な変数はありません。",
+  "step_trigger_short": "トリガー",
+  "step_action_short": "アクション {{index}}"
 }
