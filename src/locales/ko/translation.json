@@ -94,11 +94,20 @@
   "button_back_trigger": "이전 (트리거)",
   "button_next_action": "다음 (액션 선택)",
   "button_save_task": "작업 저장",
-  "button_add_action": "액션 추가",
+  "button_add_action": "다음 (액션 추가)",
   "available_variables_title": "사용 가능한 변수",
   "no_available_variables": "사용 가능한 변수가 없습니다.",
   "button_back_action": "이전 ({{index}}단계)",
   "step_action_index": "{{index}}단계: 액션 선택",
   "step_trigger_short": "트리거",
-  "step_action_short": "액션 {{index}}"
+  "step_action_short": "액션 {{index}}",
+  "task_add_no_schema": "설정할 수 있는 항목이 없습니다.",
+  "form_required_fields": "필수 항목",
+  "form_optional_fields": "선택 항목",
+  "task_name": "작업 이름",
+  "task_name_placeholder": "예: 매일 아침 날씨 이메일 받기",
+  "task_name_required": "작업 이름을 입력해주세요.",
+  "action_required": "하나 이상의 액션이 필요합니다.",
+  "task_save_success": "작업이 성공적으로 저장되었습니다!",
+  "task_save_error": "작업 저장에 실패했습니다. 다시 시도해주세요."
 }

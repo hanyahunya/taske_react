@@ -94,11 +94,20 @@
   "button_back_trigger": "Back (Trigger)",
   "button_next_action": "Next (Select Action)",
   "button_save_task": "Save Task",
-  "button_add_action": "Add Action",
+  "button_add_action": "Next (Add Action)",
   "button_back_action": "Back (Step {{index}})",
   "step_action_index": "Step {{index}}: Select Action",
   "available_variables_title": "Available Variables",
   "no_available_variables": "No available variables.",
   "step_trigger_short": "Trigger",
-  "step_action_short": "Action {{index}}"
+  "step_action_short": "Action {{index}}",
+  "task_add_no_schema": "No configuration items available.",
+  "form_required_fields": "Required Fields",
+  "form_optional_fields": "Optional Fields",
+  "task_name": "Task Name",
+  "task_name_placeholder": "e.g., Send daily weather report",
+  "task_name_required": "Please enter a task name.",
+  "action_required": "At least one action is required to save.",
+  "task_save_success": "Task saved successfully!",
+  "task_save_error": "Failed to save the task. Please try again."
 }

@@ -2119,10 +2119,11 @@ https://www.tooplate.com/view/2141-minimal-white
         /* --- ✅ 핵심 수정 3: 단계 이동 버튼 스타일 --- */
         .step-navigation {
             display: flex;
-            justify-content: space-between; /* 버튼 양 끝 정렬 */
-            margin-top: 30px; /* 위쪽 여백 */
-            padding-top: 20px; /* 위쪽 여백 */
-            border-top: 1px solid #eee; /* 구분선 */
+            /* justify-content: space-between; /* 🚨 이 줄을 제거합니다. */
+            align-items: center; /* ✅ 세로 중앙 정렬 추가 */
+            margin-top: 30px; 
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
 
         .step-button {
@@ -2239,20 +2240,31 @@ https://www.tooplate.com/view/2141-minimal-white
             margin-bottom: 15px;
         }
 
-        .var-item code {
+        .var-item-name {
+            display: inline-block; /* 이름표처럼 보이도록 */
             background: #eee;
-            padding: 2px 5px;
+            padding: 5px 8px;
             border-radius: 4px;
             font-size: 13px;
             font-weight: 600;
             color: #333;
-            word-break: break-all; /* 긴 변수명 줄바꿈 */
+            cursor: grab; /* 드래그 가능함을 나타내는 커서 */
+            transition: background-color 0.2s ease;
+            word-break: break-all;
         }
 
-        .var-item p {
+        .var-item-name:hover {
+            background: #ddd;
+        }
+
+        .var-item-name:active {
+            cursor: grabbing; /* 클릭(잡았을 때) 커서 */
+        }
+
+        .var-item-description {
             font-size: 12px;
             color: #777;
-            margin-top: 5px;
+            margin-top: 5px; /* 이름표와의 간격 */
         }
 
         /* --- Mobile Responsive for new layout --- */
@@ -2332,4 +2344,284 @@ https://www.tooplate.com/view/2141-minimal-white
             .step-indicator-item:not(.active) span {
                 display: none;
             }
+        }
+
+
+
+
+
+
+
+
+
+        /* --- Capability Form Styles (in .service-container) --- */
+        .capability-form-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* 폼이 길어질 경우 내부 스크롤 */
+            color: #333; /* 기본 텍스트 색상 복원 (기존 #aaa) */
+            padding: 10px; /* 내부 여백 */
+        }
+
+        .form-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .form-section:first-child h4 {
+            margin-top: 0;
+        }
+
+        .form-field {
+            margin-bottom: 25px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #000;
+        }
+
+        .form-field input[type="text"],
+        .form-field input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-field input[type="text"]:focus,
+        .form-field input[type="email"]:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+
+
+
+
+
+
+
+
+        /* --- Task Name Input (Add Task Page) --- */
+        .task-name-container {
+            margin-bottom: 10px; /* 기존 50px보다 줄임 */
+            border: 1px solid #eee;
+            padding: 20px 25px;
+            border-radius: 8px;
+            background: #fdfdfd;
+            flex-shrink: 0;
+        }
+
+        .task-name-container .form-field {
+            margin: 0;
+        }
+
+        .task-name-container label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .task-name-container input[type="text"] {
+            width: 100%;
+            font-size: 24px; /* Make it large like a title */
+            font-weight: 300;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            padding: 10px 0;
+            background: transparent;
+            letter-spacing: -0.5px;
+        }
+        .task-name-container input[type="text"]:focus {
+            outline: none;
+            border-bottom-color: #000;
+        }
+
+        /* CapabilityForm.js의 textarea 스타일 추가 */
+        .form-field textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+            resize: vertical;
+        }
+
+        .form-field textarea:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        /* CapabilityForm.js의 code 태그 스타일 */
+        .form-field label code {
+            font-size: 13px;
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #c7254e;
+        }
+
+
+        /* --- Array Input Styles (in CapabilityForm) --- */
+        .array-input-container {
+            width: 100%;
+        }
+
+        .array-input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .array-input-field {
+            flex-grow: 1;
+            min-width: 0;
+            /* .form-field input[type="text"] 스타일 재사용 */
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+        .array-input-field:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        .array-add-btn {
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            font-size: 24px;
+            font-weight: 300;
+            background: #000;
+            color: #fff;
+            border: 2px solid #000;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .array-add-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .array-item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .array-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .array-item span {
+            padding-right: 10px;
+        }
+
+        .array-delete-btn {
+            flex-shrink: 0;
+            width: 22px;
+            height: 22px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1;
+            border: 1px solid #aaa;
+            color: #aaa;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .array-delete-btn:hover {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+
+
+
+
+
+
+
+        /* 1. contenteditable div를 기존 input처럼 보이게 하는 스타일 */
+        .variable-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 14px;
+            font-family: inherit;
+            line-height: 1.5; /* 줄 간격 추가 */
+            min-height: 45px; /* input과 최소 높이 맞춤 */
+            cursor: text;
+            transition: border-color 0.2s ease;
+        }
+        
+        .variable-input:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        /* 2. textarea처럼 보이게 하는 스타일 */
+        .variable-input.textarea-like {
+            min-height: 100px; /* textarea의 rows=4와 유사하게 */
+            resize: vertical;
+            overflow: auto;
+        }
+        
+        /* 3. Placeholder 스타일 (div가 비었을 때 가상 요소로 표시) */
+        .variable-input.show-placeholder::before {
+            content: attr(data-placeholder);
+            color: #aaa; /* input의 placeholder 색상과 유사하게 */
+            cursor: text;
+            pointer-events: none; /* 클릭 이벤트 방해 안함 */
+        }
+        
+        /* 4. 내부에 삽입될 "박스" (Pill) 스타일 */
+        .variable-pill {
+            display: inline-block; /* 텍스트처럼 흐름 안에 포함 */
+            background: #e0e0e0; /* 사이드바의 var-item-name과 유사하게 */
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            cursor: default; /* 박스 내부는 텍스트 커서 아님 */
+            line-height: 1.2; /* 박스 높이 조절 */
+            margin: 0 1px; /* 양옆 간격 */
+            user-select: none; /* 박스 내부 텍스트 선택 방지 */
+            white-space: nowrap; /* 박스 내부 줄바꿈 방지 */
         }
