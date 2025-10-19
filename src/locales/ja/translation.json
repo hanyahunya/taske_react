@@ -109,5 +109,15 @@
   "task_name_required": "タ스크名を入力してください。",
   "action_required": "少なくとも1つのアクションが必要です。",
   "task_save_success": "タスクが正常に保存されました。",
-  "task_save_error": "タスクの保存に失敗しました。もう一度お試しください。"
+  "task_save_error": "タスクの保存に失敗しました。もう一度お試しください。",
+  "cron_day_sun": "日",
+  "cron_day_mon": "月",
+  "cron_day_tue": "火",
+  "cron_day_wed": "水",
+  "cron_day_thu": "木",
+  "cron_day_fri": "金",
+  "cron_day_sat": "土",
+  "cron_shortcut_weekdays": "平日",
+  "cron_shortcut_weekends": "週末",
+  "cron_shortcut_everyday": "毎日"
 }

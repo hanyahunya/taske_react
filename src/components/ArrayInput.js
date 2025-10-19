@@ -1,34 +1,38 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import VariableInput from './VariableInput'; // VariableInput import
+
+// ❌ convertHtmlToBackendKey 헬퍼 함수를 이 파일에서 제거합니다.
 
 /**
  * 'type: "array"' 스키마를 위한 동적 배열 입력 컴포넌트
- * @param {object} field - 스키마의 'field' 객체 (예: "to" 필드 전체)
- * @param {array} value - 현재 저장된 값 (배열)
- * @param {function} onChange - 변경 시 호출될 콜백 (새 배열을 인자로 받음)
  */
 const ArrayInput = ({ field, value = [], onChange }) => {
     const { t } = useTranslation();
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(''); // HTML 문자열을 저장
 
-    // 'items' 스키마를 기반으로 입력 필드의 타입을 결정 (예: format: "email")
-    const inputType = field.items?.format === 'email' ? 'email' : 'text';
-
-    // 항목 추가 핸들러
+    // ✅ 1. 항목 추가 핸들러 수정
     const handleAddItem = (e) => {
-        e.preventDefault(); // 폼 제출 방지 (필요시)
-        if (inputValue.trim()) {
-            onChange([...value, inputValue.trim()]);
-            setInputValue(''); // 입력 필드 초기화
+        e.preventDefault();
+        
+        // HTML을 기반으로 실제 텍스트 콘텐츠가 있는지 확인
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = inputValue;
+        const plainText = tempDiv.textContent || "";
+
+        // 실제 텍스트가 있을 때만 추가
+        if (plainText.trim()) {
+            onChange([...value, inputValue]); // HTML 원본을 그대로 추가
+            setInputValue(''); // VariableInput 초기화
         }
     };
 
-    // 항목 삭제 핸들러
+    // 항목 삭제 핸들러 (변경 없음)
     const handleDeleteItem = (indexToDelete) => {
         onChange(value.filter((_, index) => index !== indexToDelete));
     };
 
-    // Enter 키로 추가
+    // Enter 키 핸들러 (변경 없음)
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -38,18 +42,17 @@ const ArrayInput = ({ field, value = [], onChange }) => {
 
     return (
         <div className="array-input-container">
-            {/* 1. 입력 필드 + 추가 버튼 */}
+            {/* 1. 입력 필드 + 추가 버튼 (VariableInput 사용) */}
             <div className="array-input-wrapper">
-                <input
-                    type={inputType}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    // --- ✅ 1. placeholder 수정 ---
-                    // 백엔드의 items 스키마에 description이 있으면 그것을 사용
-                    placeholder={field.items?.description || ''}
-                    className="array-input-field"
-                />
+                <div style={{ flexGrow: 1, minWidth: 0 }}>
+                    <VariableInput
+                        isTextArea={false}
+                        value={inputValue}
+                        onChange={setInputValue}
+                        onKeyDown={handleKeyDown}
+                        placeholder={field.items?.description || ''}
+                    />
+                </div>
                 <button
                     type="button"
                     onClick={handleAddItem}
@@ -63,7 +66,8 @@ const ArrayInput = ({ field, value = [], onChange }) => {
             <div className="array-item-list">
                 {value.map((item, index) => (
                     <div key={index} className="array-item">
-                        <span>{item}</span>
+                        {/* ✅ 2. HTML을 렌더링하도록 수정 */}
+                        <span dangerouslySetInnerHTML={{ __html: item }} />
                         <button
                             type="button"
                             onClick={() => handleDeleteItem(index)}

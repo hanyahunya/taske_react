@@ -2121,8 +2121,8 @@ https://www.tooplate.com/view/2141-minimal-white
             display: flex;
             /* justify-content: space-between; /* 🚨 이 줄을 제거합니다. */
             align-items: center; /* ✅ 세로 중앙 정렬 추가 */
-            margin-top: 30px; 
-            padding-top: 20px;
+            margin-top: 10px; 
+            padding-top: 10px;
             border-top: 1px solid #eee;
         }
 
@@ -2624,4 +2624,114 @@ https://www.tooplate.com/view/2141-minimal-white
             margin: 0 1px; /* 양옆 간격 */
             user-select: none; /* 박스 내부 텍스트 선택 방지 */
             white-space: nowrap; /* 박스 내부 줄바꿈 방지 */
+        }
+
+
+
+
+        .variable-pill {
+        /* ... (기존 스타일) ... */
+        white-space: nowrap; /* 박스 내부 줄바꿈 방지 */
+    }
+
+
+        /* --- Cron Builder UI (for schedule_cron) --- */
+
+        .cron-builder-container {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            width: 100%;
+        }
+
+        .cron-time-input-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .cron-time-input {
+            width: 60px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            font-family: inherit;
+            -moz-appearance: textfield; /* Firefox */
+        }
+        .cron-time-input::-webkit-outer-spin-button,
+        .cron-time-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .cron-time-input:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+
+        .cron-time-separator {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 10px;
+        }
+
+        .cron-days-toggle {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .day-btn {
+            flex: 1;
+            padding: 10px 5px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            border: 1px solid #000;
+            background: #fff;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+        }
+
+        .day-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .day-btn.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .cron-shortcut-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cron-shortcut-buttons button {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            border: 1px solid #aaa;
+            background: #fff;
+            color: #555;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .cron-shortcut-buttons button:hover {
+            background: #f5f5f5;
+            border-color: #000;
+            color: #000;
         }

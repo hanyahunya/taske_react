@@ -109,5 +109,15 @@
   "task_name_required": "Please enter a task name.",
   "action_required": "At least one action is required to save.",
   "task_save_success": "Task saved successfully!",
-  "task_save_error": "Failed to save the task. Please try again."
+  "task_save_error": "Failed to save the task. Please try again.",
+  "cron_day_sun": "Sun",
+  "cron_day_mon": "Mon",
+  "cron_day_tue": "Tue",
+  "cron_day_wed": "Wed",
+  "cron_day_thu": "Thu",
+  "cron_day_fri": "Fri",
+  "cron_day_sat": "Sat",
+  "cron_shortcut_weekdays": "Weekdays",
+  "cron_shortcut_weekends": "Weekends",
+  "cron_shortcut_everyday": "Every Day"
 }

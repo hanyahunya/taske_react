@@ -2,11 +2,29 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrayInput from './ArrayInput';
 import VariableInput from './VariableInput'; // ✅ VariableInput import 확인
+import CronBuilder from './CronBuilder'; // ✅ 1. CronBuilder import
 
 /**
  * paramSchema의 properties를 기반으로 개별 입력 필드를 렌더링합니다.
  */
-const renderField = (key, field, value, onFieldChange, t) => {
+// ✅ 2. renderField 시그니처에 capabilityId 추가
+const renderField = (key, field, value, onFieldChange, t, capabilityId) => {
+
+    // --- ✅ 3. Cron 빌더 특별 처리 ---
+    if (capabilityId === 'schedule_cron' && key === 'cron') {
+        return (
+            <div className="form-field" key={key}>
+                <label htmlFor={key}>{field.description || key}</label>
+                <CronBuilder
+                    id={key}
+                    value={value || '0 0 12 * * 1,2,3,4,5'} // 기본값: 평일 12:00
+                    onChange={(newValue) => onFieldChange(key, newValue)}
+                />
+            </div>
+        );
+    }
+    // --- 특별 처리 끝 ---
+
 
     // 1. 'type: "array"' (변경 없음)
     if (field.type === 'array') {
@@ -77,7 +95,8 @@ const renderField = (key, field, value, onFieldChange, t) => {
 /**
  * paramSchema를 받아 동적 폼을 렌더링하는 컴포넌트
  */
-const CapabilityForm = ({ schema, config, onChange }) => {
+// ✅ 4. capabilityId를 props로 받도록 수정
+const CapabilityForm = ({ schema, capabilityId, config, onChange }) => {
     const { t } = useTranslation();
 
     const handleFieldChange = (key, value) => {
@@ -100,8 +119,9 @@ const CapabilityForm = ({ schema, config, onChange }) => {
 
     Object.entries(properties).forEach(([key, field]) => {
         const currentValue = config[key];
-        // ✅ renderField 호출 시 id가 전달됨 (renderField 내부 로직 변경)
-        const fieldComponent = renderField(key, field, currentValue, handleFieldChange, t);
+        
+        // ✅ 5. renderField 호출 시 capabilityId 전달
+        const fieldComponent = renderField(key, field, currentValue, handleFieldChange, t, capabilityId);
 
         if (simpleRequired.includes(key)) {
             requiredFields.push(fieldComponent);

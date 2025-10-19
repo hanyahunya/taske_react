@@ -7,60 +7,42 @@ import ModuleSelection from '../components/ModuleSelection';
 import CapabilityForm from '../components/CapabilityForm';
 import { translateData } from '../utils/i18nParser';
 
-// ✅ 1. HTML을 백엔드 키로 변환하는 헬퍼 함수
+// HTML을 백엔드 키로 변환하는 헬퍼 함수 (변경 없음)
 const convertHtmlToBackendKey = (html) => {
     if (!html) return '';
-    // 임시 div를 사용해 HTML 문자열을 DOM 노드로 변환
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
-
-    // <span class="variable-pill" data-key="...">...</span> 태그를 찾음
     const pills = tempDiv.querySelectorAll('.variable-pill');
-
     pills.forEach(pill => {
         const key = pill.getAttribute('data-key');
         if (key) {
-            // span 태그를 data-key 값(텍스트 노드)으로 교체
             pill.parentNode.replaceChild(document.createTextNode(key), pill);
         }
     });
-
-    // HTML <br>을 \n (줄바꿈)으로 변환
     tempDiv.innerHTML = tempDiv.innerHTML.replace(/<br\s*\/?>/gi, '\n');
-
-    // &nbsp; 같은 HTML 엔티티를 실제 문자로 변환 (textContent가 자동으로 처리)
     return tempDiv.textContent || '';
 };
 
 
-/**
- * 스키마를 파싱하여 변수 맵을 생성합니다.
- * @param {object} schema - outputSchema
- * @param {string} logicalPrefix - 변수 키에 사용될 접두사 (예: "trigger.output")
- * @param {string} displayPrefix - UI에 표시될 접두사 (예: "트리거", "액션 1")
- * @returns {object} - { "trigger.output.key": { name: "...", description: "...", backendKey: "#_%...%_#" } }
- */
+// parseSchema 헬퍼 함수 (변경 없음)
 const parseSchema = (schema, logicalPrefix, displayPrefix) => {
     if (!schema || !schema.properties) return {};
     const vars = {};
     for (const [key, value] of Object.entries(schema.properties)) {
         const logicalKey = `${logicalPrefix}.${key}`;
-
         const displayName = value.name || key;
         const description = value.description || 'No description available';
-
-        // ✅ 2. 백엔드 전송용 키 형식 추가
         vars[logicalKey] = {
             name: `${displayPrefix} / ${displayName}`,
             description: description,
-            backendKey: `#_%${logicalKey}%_#` // 예: #_%action0.output.success%_#
+            backendKey: `#_%${logicalKey}%_#`
         };
     }
     return vars;
 };
 
+// StepIndicator 컴포넌트 (변경 없음)
 const StepIndicator = ({ currentStep, totalSteps, onStepClick, t }) => {
-    // ... (기존 코드와 동일)
     const steps = [];
     for (let i = 0; i < totalSteps; i++) {
         const isActive = currentStep === i;
@@ -70,7 +52,6 @@ const StepIndicator = ({ currentStep, totalSteps, onStepClick, t }) => {
         } else {
             label = t('step_action_short', 'Action {{index}}', { index: i });
         }
-
         steps.push(
             <button
                 key={i}
@@ -93,13 +74,13 @@ const StepIndicator = ({ currentStep, totalSteps, onStepClick, t }) => {
 const AddTaskPage = () => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
-    const MAX_ACTIONS = 5; // (기존 코드와 동일)
+    const MAX_ACTIONS = 5;
 
+    // --- (모든 useState 훅은 변경 없음) ---
     const [rawModules, setRawModules] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState(null);
-
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedTrigger, setSelectedTrigger] = useState(null);
     const [selectedActions, setSelectedActions] = useState([]);
@@ -107,7 +88,7 @@ const AddTaskPage = () => {
     const [taskName, setTaskName] = useState('');
     const [stepConfigs, setStepConfigs] = useState({});
 
-
+    // --- (모든 useEffect 훅은 변경 없음) ---
     useEffect(() => {
         const fetchModules = async () => {
             try {
@@ -129,15 +110,12 @@ const AddTaskPage = () => {
         return translateData(rawModules, i18n.language);
     }, [rawModules, i18n.language]);
 
-
     useEffect(() => {
         if (currentStep === 0) {
             setAvailableVariables({});
             return;
         }
-
         let allVars = {};
-
         if (selectedTrigger) {
             allVars = {
                 ...allVars,
@@ -148,13 +126,11 @@ const AddTaskPage = () => {
                 )
             };
         }
-
         const previousActions = selectedActions.slice(0, currentStep - 1);
         previousActions.forEach((action, index) => {
             if (action) {
                 const logicalPrefix = `action${index}.output`;
                 const displayPrefix = t('step_action_short', { index: index + 1 });
-
                 allVars = {
                     ...allVars,
                     ...parseSchema(
@@ -165,11 +141,10 @@ const AddTaskPage = () => {
                 };
             }
         });
-
         setAvailableVariables(allVars);
     }, [selectedTrigger, selectedActions, currentStep, t]);
 
-
+    // --- (모든 핸들러 함수들 (handleConfigChange, handleSelectCapability, handleStepClick)은 변경 없음) ---
     const handleConfigChange = (stepIndex, newConfig) => {
         setStepConfigs(prevConfigs => ({
             ...prevConfigs,
@@ -184,14 +159,11 @@ const AddTaskPage = () => {
             setStepConfigs({ 0: stepConfigs[0] });
         } else {
             const actionIndex = currentStep - 1;
-            
             if (actionIndex >= MAX_ACTIONS) return; 
-
             const newActions = [...selectedActions];
             newActions[actionIndex] = capability;
             const finalActions = newActions.slice(0, actionIndex + 1);
             setSelectedActions(finalActions);
-
             const newConfigs = { ...stepConfigs };
             for (let i = actionIndex + 2; i <= selectedActions.length; i++) {
                 delete newConfigs[i];
@@ -203,7 +175,8 @@ const AddTaskPage = () => {
     const handleStepClick = (stepIndex) => {
         setCurrentStep(stepIndex);
     };
-
+    
+    // --- (모든 useMemo 훅 및 렌더링 헬퍼 함수 (useMemo, renderStepContent, renderServiceContainerContent)는 변경 없음) ---
     const { capabilityType, title, selectedCapability } = useMemo(() => {
         if (currentStep === 0) {
             return { capabilityType: 'triggers', title: t('step_trigger'), selectedCapability: selectedTrigger };
@@ -231,21 +204,20 @@ const AddTaskPage = () => {
     const renderServiceContainerContent = () => {
         if (selectedCapability) {
             const currentConfig = stepConfigs[currentStep] || {};
-
             return (
                 <CapabilityForm
                     schema={selectedCapability.paramSchema}
+                    capabilityId={selectedCapability.capabilityId}
                     config={currentConfig}
                     onChange={(newConfig) => handleConfigChange(currentStep, newConfig)}
                 />
             );
         }
-
         const promptKey = currentStep === 0 ? 'trigger' : 'action';
         return <p>{t('task_add_select_capability_prompt', { step: promptKey })}</p>;
     };
 
-    // --- (handleSaveTask는 변경 없음) ---
+    // --- ✅ [핵심 수정] handleSaveTask 함수 ---
     const handleSaveTask = async () => {
         if (!taskName.trim()) {
             alert(t('task_name_required', '작업 이름을 입력해주세요.'));
@@ -271,28 +243,31 @@ const AddTaskPage = () => {
             for (const key in rawConfig) {
                 if (Object.prototype.hasOwnProperty.call(rawConfig, key) && properties[key]) {
                     const type = properties[key].type;
-                    const rawValue = rawConfig[key]; // rawValue는 이제 HTML일 수 있음
+                    const rawValue = rawConfig[key]; 
 
                     if (rawValue === null || rawValue === undefined) continue;
 
+                    // --- ✅ [핵심 수정] ---
                     if (type === 'array') {
-                        // ArrayInput은 HTML이 아니므로 그대로 둠
-                        config[key] = rawValue;
+                        // rawValue는 이제 HTML 문자열의 배열입니다.
+                        // 각 항목을 백엔드 키로 변환합니다.
+                        if (Array.isArray(rawValue)) {
+                            config[key] = rawValue.map(item => convertHtmlToBackendKey(String(item)));
+                        } else {
+                            config[key] = []; // 혹시 모를 오류 방지
+                        }
+                    // --- 수정 끝 ---
                     } else if (type === 'object') {
-                        // Object (JSON textarea)도 HTML이 아니므로 그대로 둠
                         if (rawValue === '') continue;
                         try {
                             config[key] = JSON.parse(rawValue);
                         } catch (e) {
-                            config[key] = rawValue; // 파싱 실패 시 원본 텍스트
+                            config[key] = rawValue;
                         }
                     } else if (type === 'string') {
-                        // ✅ HTML을 백엔드 키로 변환
-                        // (email 필드도 string이지만, convertHtmlToBackendKey는
-                        //  HTML이 없는 일반 텍스트는 그대로 반환하므로 안전함)
+                        // HTML을 백엔드 키로 변환
                         config[key] = convertHtmlToBackendKey(rawValue);
                     } else {
-                        // boolean, number 등
                         config[key] = rawValue;
                     }
                 }
@@ -330,15 +305,13 @@ const AddTaskPage = () => {
         }
     };
 
+    // --- (JSX 렌더링 부분은 변경 없음) ---
     const isCurrentStepValid = currentStep === 0 ? !!selectedTrigger : !!selectedActions[currentStep - 1];
-    
     const totalStepsToShow = Math.min(
         Math.max(currentStep + 1, 1 + selectedActions.length),
         1 + MAX_ACTIONS 
     );
 
-
-    // --- (JSX 렌더링 부분) ---
     return (
         <div className="page-container">
             <div className="task-name-container">
@@ -361,7 +334,6 @@ const AddTaskPage = () => {
             {!isLoading && !isSaving && !error && (
                 <>
                     <div className="add-task-wrapper">
-
                         <div className="add-task-main-content">
                             <div className="task-creation-container">
                                 {renderStepContent()}
@@ -377,7 +349,6 @@ const AddTaskPage = () => {
                                 {Object.keys(availableVariables).length === 0 ? (
                                     <p>{t('no_available_variables')}</p>
                                 ) : (
-                                    // --- (드래그 앤 드롭 로직은 변경 없음) ---
                                     Object.entries(availableVariables).map(([key, valueObj]) => (
                                         <div className="var-item" key={key}>
                                             <div
@@ -389,7 +360,6 @@ const AddTaskPage = () => {
                                             >
                                                 {valueObj.name}
                                             </div>
-
                                             <p className="var-item-description">
                                                 {valueObj.description}
                                             </p>
@@ -432,9 +402,7 @@ const AddTaskPage = () => {
                                     {t('button_save_task')}
                                 </button>
                             )}
-
-                            {/* --- ✅ [핵심 수정] "다음/액션 추가" 버튼 조건부 렌더링 --- */}
-                            {/* currentStep이 5 (액션 5 페이지)보다 작을 때만 버튼을 보여줍니다. */}
+                            
                             { currentStep < MAX_ACTIONS && (
                                 <button
                                     className="step-button"
