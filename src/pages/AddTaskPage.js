@@ -71,12 +71,34 @@ const StepIndicator = ({ currentStep, totalSteps, onStepClick, t }) => {
 };
 
 
+// 필드가 비어있는지 확인하는 헬퍼 함수 (변경 없음)
+const isFieldEmpty = (value, fieldSchema) => {
+    if (!fieldSchema) return false; 
+    const { type } = fieldSchema;
+
+    if (value === null || value === undefined) return true;
+
+    if (type === 'string') {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = String(value);
+        return (tempDiv.textContent || "").trim() === '';
+    }
+    if (type === 'array') {
+        return value.length === 0;
+    }
+    if (type === 'object') {
+        return String(value).trim() === '';
+    }
+    return String(value).trim() === '';
+};
+
+
 const AddTaskPage = () => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const MAX_ACTIONS = 5;
 
-    // --- (모든 useState 훅은 변경 없음) ---
+    // --- (상태 관리 변경 없음) ---
     const [rawModules, setRawModules] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -87,8 +109,9 @@ const AddTaskPage = () => {
     const [availableVariables, setAvailableVariables] = useState({});
     const [taskName, setTaskName] = useState('');
     const [stepConfigs, setStepConfigs] = useState({});
+    const [validationError, setValidationError] = useState(null);
 
-    // --- (모든 useEffect 훅은 변경 없음) ---
+    // --- (useEffect 훅은 변경 없음) ---
     useEffect(() => {
         const fetchModules = async () => {
             try {
@@ -144,8 +167,56 @@ const AddTaskPage = () => {
         setAvailableVariables(allVars);
     }, [selectedTrigger, selectedActions, currentStep, t]);
 
-    // --- (모든 핸들러 함수들 (handleConfigChange, handleSelectCapability, handleStepClick)은 변경 없음) ---
+
+    // --- (validateStep 함수 변경 없음) ---
+    const validateStep = (stepIndex) => {
+        let capability, config, schema;
+
+        if (stepIndex === 0) {
+            capability = selectedTrigger;
+            config = stepConfigs[0] || {};
+        } else {
+            capability = selectedActions[stepIndex - 1];
+            config = stepConfigs[stepIndex] || {};
+        }
+
+        if (!capability || !capability.paramSchema || !capability.paramSchema.required) {
+            return null;
+        }
+        
+        schema = capability.paramSchema;
+        const requiredFields = schema.required.filter(key => !key.startsWith('_'));
+
+        for (const key of requiredFields) {
+            const value = config[key];
+            const fieldSchema = schema.properties[key];
+            
+            if (isFieldEmpty(value, fieldSchema)) {
+                return key; 
+            }
+        }
+
+        return null;
+    };
+
+
+    // --- (handleConfigChange, handleSelectCapability, handleStepClick 핸들러 변경 없음) ---
     const handleConfigChange = (stepIndex, newConfig) => {
+        if (validationError) {
+            const lastConfig = stepConfigs[stepIndex] || {};
+            const changedKey = Object.keys(newConfig).find(k => newConfig[k] !== lastConfig[k]);
+            
+            if (changedKey === validationError) {
+                let capability = stepIndex === 0 ? selectedTrigger : selectedActions[stepIndex - 1];
+                if (capability && capability.paramSchema) {
+                    const fieldSchema = capability.paramSchema.properties[validationError];
+                    if (!isFieldEmpty(newConfig[validationError], fieldSchema)) {
+                        setValidationError(null);
+                    }
+                }
+            }
+        }
+
         setStepConfigs(prevConfigs => ({
             ...prevConfigs,
             [stepIndex]: newConfig
@@ -153,6 +224,7 @@ const AddTaskPage = () => {
     };
 
     const handleSelectCapability = (capability) => {
+        setValidationError(null);
         if (currentStep === 0) {
             setSelectedTrigger(capability);
             setSelectedActions([]);
@@ -173,10 +245,11 @@ const AddTaskPage = () => {
     };
 
     const handleStepClick = (stepIndex) => {
+        setValidationError(null);
         setCurrentStep(stepIndex);
     };
     
-    // --- (모든 useMemo 훅 및 렌더링 헬퍼 함수 (useMemo, renderStepContent, renderServiceContainerContent)는 변경 없음) ---
+    // --- (useMemo 훅 및 렌더링 헬퍼 함수 변경 없음) ---
     const { capabilityType, title, selectedCapability } = useMemo(() => {
         if (currentStep === 0) {
             return { capabilityType: 'triggers', title: t('step_trigger'), selectedCapability: selectedTrigger };
@@ -210,6 +283,7 @@ const AddTaskPage = () => {
                     capabilityId={selectedCapability.capabilityId}
                     config={currentConfig}
                     onChange={(newConfig) => handleConfigChange(currentStep, newConfig)}
+                    validationError={validationError}
                 />
             );
         }
@@ -217,10 +291,13 @@ const AddTaskPage = () => {
         return <p>{t('task_add_select_capability_prompt', { step: promptKey })}</p>;
     };
 
-    // --- ✅ [핵심 수정] handleSaveTask 함수 ---
+    // --- (handleSaveTask 함수 변경 없음) ---
+    // 이미 작업 이름 검증을 가장 먼저 수행하고 있습니다.
     const handleSaveTask = async () => {
+        // 1. 작업 이름 검사
         if (!taskName.trim()) {
             alert(t('task_name_required', '작업 이름을 입력해주세요.'));
+            document.getElementById('taskName')?.focus(); 
             return;
         }
         if (!selectedTrigger) return;
@@ -229,7 +306,19 @@ const AddTaskPage = () => {
             return;
         }
 
+        // 2. 모든 스텝(트리거 + 액션) 유효성 검사
+        const allSteps = [selectedTrigger, ...selectedActions];
+        for (let i = 0; i < allSteps.length; i++) {
+            const missingField = validateStep(i);
+            if (missingField) {
+                setCurrentStep(i); 
+                setValidationError(missingField); 
+                return; 
+            }
+        }
+
         setIsSaving(true);
+        setValidationError(null);
 
         const buildConfig = (stepIndex, capability) => {
             const config = {};
@@ -247,16 +336,12 @@ const AddTaskPage = () => {
 
                     if (rawValue === null || rawValue === undefined) continue;
 
-                    // --- ✅ [핵심 수정] ---
                     if (type === 'array') {
-                        // rawValue는 이제 HTML 문자열의 배열입니다.
-                        // 각 항목을 백엔드 키로 변환합니다.
                         if (Array.isArray(rawValue)) {
                             config[key] = rawValue.map(item => convertHtmlToBackendKey(String(item)));
                         } else {
-                            config[key] = []; // 혹시 모를 오류 방지
+                            config[key] = [];
                         }
-                    // --- 수정 끝 ---
                     } else if (type === 'object') {
                         if (rawValue === '') continue;
                         try {
@@ -265,7 +350,6 @@ const AddTaskPage = () => {
                             config[key] = rawValue;
                         }
                     } else if (type === 'string') {
-                        // HTML을 백엔드 키로 변환
                         config[key] = convertHtmlToBackendKey(rawValue);
                     } else {
                         config[key] = rawValue;
@@ -305,7 +389,7 @@ const AddTaskPage = () => {
         }
     };
 
-    // --- (JSX 렌더링 부분은 변경 없음) ---
+    // --- (JSX 렌더링 상단 변경 없음) ---
     const isCurrentStepValid = currentStep === 0 ? !!selectedTrigger : !!selectedActions[currentStep - 1];
     const totalStepsToShow = Math.min(
         Math.max(currentStep + 1, 1 + selectedActions.length),
@@ -374,7 +458,10 @@ const AddTaskPage = () => {
                         {currentStep > 0 && (
                             <button
                                 className="step-button back"
-                                onClick={() => setCurrentStep(currentStep - 1)}
+                                onClick={() => {
+                                    setValidationError(null); 
+                                    setCurrentStep(currentStep - 1);
+                                }}
                             >
                                 {currentStep === 1 ? t('button_back_trigger') : t('button_back_action', { index: currentStep - 1 })}
                             </button>
@@ -406,7 +493,19 @@ const AddTaskPage = () => {
                             { currentStep < MAX_ACTIONS && (
                                 <button
                                     className="step-button"
-                                    onClick={() => setCurrentStep(currentStep + 1)}
+                                    // --- ✅ [핵심 수정] "다음" 버튼 onClick ---
+                                    // 작업 이름 검증 로직 제거
+                                    onClick={() => {
+                                        // 1. 현재 스텝 유효성 검사
+                                        const missingField = validateStep(currentStep);
+                                        if (missingField) {
+                                            setValidationError(missingField); // 에러 필드 설정
+                                            return; // 이동 중단
+                                        }
+                                        
+                                        setValidationError(null); // 검사 통과 시 에러 초기화
+                                        setCurrentStep(currentStep + 1); // 다음 스텝으로 이동
+                                    }}
                                     disabled={!isCurrentStepValid}
                                 >
                                     {currentStep === 0 ? t('button_next_action') : t('button_add_action')}

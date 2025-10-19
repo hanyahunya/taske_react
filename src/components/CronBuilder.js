@@ -10,15 +10,15 @@ const parseCron = (cronValue) => {
     try {
         const parts = cronValue.split(' ');
         if (parts.length !== 6) {
-            // 기본값: 평일 12:00
-            return { minute: '0', hour: '12', days: [1, 2, 3, 4, 5] };
+            // --- ✅ [수정] 기본 요일을 '평일'에서 '선택 안 함'으로 변경 ---
+            return { minute: '0', hour: '12', days: [] };
         }
         
         const [sec, min, hr, dayOfMonth, month, dayOfWeek] = parts;
         
-        // "0" 또는 "*"이 아닌 값은 파싱 실패로 간주하고 기본값 반환
         if (sec !== '0' || dayOfMonth !== '*' || month !== '*') {
-             return { minute: '0', hour: '12', days: [1, 2, 3, 4, 5] };
+             // --- ✅ [수정] 기본 요일을 '평일'에서 '선택 안 함'으로 변경 ---
+             return { minute: '0', hour: '12', days: [] };
         }
 
         const parsedDays = dayOfWeek === '*' ? [] : dayOfWeek.split(',').map(Number);
@@ -30,13 +30,14 @@ const parseCron = (cronValue) => {
         };
 
     } catch (e) {
-        // 파싱 중 오류 발생 시 기본값
-        return { minute: '0', hour: '12', days: [1, 2, 3, 4, 5] };
+        // --- ✅ [수정] 기본 요일을 '평일'에서 '선택 안 함'으로 변경 ---
+        return { minute: '0', hour: '12', days: [] };
     }
 };
 
 
-const CronBuilder = ({ id, value, onChange }) => {
+// --- (이하 코드는 변경 없음) ---
+const CronBuilder = ({ id, value, onChange, isError }) => {
     const { t } = useTranslation();
 
     const DAYS_OF_WEEK = useMemo(() => [
@@ -117,7 +118,8 @@ const CronBuilder = ({ id, value, onChange }) => {
     };
 
     return (
-        <div className="cron-builder-container" id={id}>
+        // --- ✅ 2. className에 isError 적용 ---
+        <div className={`cron-builder-container ${isError ? 'field-error' : ''}`} id={id}>
             {/* 1. 시간 입력 */}
             <div className="cron-time-input-wrapper">
                 <input

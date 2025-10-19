@@ -9,8 +9,9 @@ const stripHtml = (html) => {
 /**
  * 변수(HTML "Pill") 삽입이 가능한 contenteditable 입력 필드
  * ✅ onKeyDown prop 추가
+ * ✅ isError prop 추가
  */
-const VariableInput = ({ id, value, onChange, placeholder, isTextArea, onKeyDown }) => {
+const VariableInput = ({ id, value, onChange, placeholder, isTextArea, onKeyDown, isError }) => {
     const editorRef = useRef(null);
 
     // props로 받은 value가 실제 DOM의 innerHTML과 다를 때만 업데이트
@@ -19,6 +20,13 @@ const VariableInput = ({ id, value, onChange, placeholder, isTextArea, onKeyDown
             editorRef.current.innerHTML = value || '';
         }
     }, [value]);
+
+    // --- ✅ [새 기능] isError가 true일 때 포커스 ---
+    useEffect(() => {
+        if (isError && editorRef.current) {
+            editorRef.current.focus();
+        }
+    }, [isError]);
 
     const handleInput = (e) => {
         const newHtml = e.target.innerHTML;
@@ -99,7 +107,9 @@ const VariableInput = ({ id, value, onChange, placeholder, isTextArea, onKeyDown
     };
 
     const isEmpty = useMemo(() => !value || stripHtml(value).trim().length === 0, [value]);
-    const className = `variable-input ${isTextArea ? 'textarea-like' : ''} ${isEmpty ? 'show-placeholder' : ''}`;
+    
+    // --- ✅ [수정] className에 isError 적용 ---
+    const className = `variable-input ${isTextArea ? 'textarea-like' : ''} ${isEmpty ? 'show-placeholder' : ''} ${isError ? 'field-error' : ''}`;
 
     return (
         <div

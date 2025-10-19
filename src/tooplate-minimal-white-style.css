@@ -2735,3 +2735,11 @@ https://www.tooplate.com/view/2141-minimal-white
             border-color: #000;
             color: #000;
         }
+
+
+        /* --- Validation Error Style --- */
+        .field-error,
+        .field-error:focus {
+            border-color: #c7254e !important; /* 붉은색 테두리 */
+            box-shadow: 0 0 5px rgba(199, 37, 78, 0.5); /* 붉은색 그림자 효과 */
+        }

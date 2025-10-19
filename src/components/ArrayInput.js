@@ -7,7 +7,8 @@ import VariableInput from './VariableInput'; // VariableInput import
 /**
  * 'type: "array"' 스키마를 위한 동적 배열 입력 컴포넌트
  */
-const ArrayInput = ({ field, value = [], onChange }) => {
+// --- ✅ 1. isError prop 받기 ---
+const ArrayInput = ({ field, value = [], onChange, isError }) => {
     const { t } = useTranslation();
     const [inputValue, setInputValue] = useState(''); // HTML 문자열을 저장
 
@@ -46,6 +47,8 @@ const ArrayInput = ({ field, value = [], onChange }) => {
             <div className="array-input-wrapper">
                 <div style={{ flexGrow: 1, minWidth: 0 }}>
                     <VariableInput
+                        // --- ✅ 2. isError prop 전달 ---
+                        isError={isError}
                         isTextArea={false}
                         value={inputValue}
                         onChange={setInputValue}

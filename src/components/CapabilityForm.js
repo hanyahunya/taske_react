@@ -1,24 +1,27 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ArrayInput from './ArrayInput';
-import VariableInput from './VariableInput'; // ✅ VariableInput import 확인
-import CronBuilder from './CronBuilder'; // ✅ 1. CronBuilder import
+import VariableInput from './VariableInput'; 
+import CronBuilder from './CronBuilder'; 
 
 /**
  * paramSchema의 properties를 기반으로 개별 입력 필드를 렌더링합니다.
  */
-// ✅ 2. renderField 시그니처에 capabilityId 추가
-const renderField = (key, field, value, onFieldChange, t, capabilityId) => {
+const renderField = (key, field, value, onFieldChange, t, capabilityId, validationError) => {
 
-    // --- ✅ 3. Cron 빌더 특별 처리 ---
+    const isError = validationError === key;
+
+    // --- ✅ Cron 빌더 특별 처리 ---
     if (capabilityId === 'schedule_cron' && key === 'cron') {
         return (
             <div className="form-field" key={key}>
                 <label htmlFor={key}>{field.description || key}</label>
                 <CronBuilder
                     id={key}
-                    value={value || '0 0 12 * * 1,2,3,4,5'} // 기본값: 평일 12:00
+                    // --- ✅ [수정] 기본 cron 값을 평일(1,2,3,4,5)에서 '*' (선택 없음)으로 변경 ---
+                    value={value || '0 0 12 * * *'} 
                     onChange={(newValue) => onFieldChange(key, newValue)}
+                    isError={isError} 
                 />
             </div>
         );
@@ -35,6 +38,7 @@ const renderField = (key, field, value, onFieldChange, t, capabilityId) => {
                     field={field}
                     value={value || []}
                     onChange={(newArray) => onFieldChange(key, newArray)}
+                    isError={isError} 
                 />
             </div>
         );
@@ -46,12 +50,13 @@ const renderField = (key, field, value, onFieldChange, t, capabilityId) => {
             <div className="form-field" key={key}>
                 <label htmlFor={key}>{field.description || key}</label>
                 <textarea
-                    id={key} // textarea에는 id가 이미 있었음
+                    id={key}
                     name={key}
                     placeholder={field.description || ''}
                     rows={3}
                     value={value || ''}
                     onChange={(e) => onFieldChange(key, e.target.value)}
+                    className={isError ? 'field-error' : ''} 
                 />
             </div>
         );
@@ -64,29 +69,31 @@ const renderField = (key, field, value, onFieldChange, t, capabilityId) => {
                 <label htmlFor={key}>{field.description || key}</label>
                 <input
                     type="email"
-                    id={key} // input에는 id가 이미 있었음
+                    id={key}
                     name={key}
                     placeholder={field.description || ''}
                     value={value || ''}
                     onChange={(e) => onFieldChange(key, e.target.value)}
+                    className={isError ? 'field-error' : ''} 
                 />
             </div>
         );
     }
 
 
-    // --- ✅ 4. 그 외 모든 "string" 타입 -> VariableInput 사용 ---
+    // --- 4. 그 외 모든 "string" 타입 -> VariableInput 사용 (변경 없음) ---
     const isTextArea = (field.format === 'html' || (field.description && field.description.length > 50));
 
     return (
         <div className="form-field" key={key}>
             <label htmlFor={key}>{field.description || key}</label>
             <VariableInput
-                id={key} // ✅ id prop 전달됨
+                id={key} 
                 isTextArea={isTextArea}
                 placeholder={field.description || ''}
                 value={value || ''}
                 onChange={(newValue) => onFieldChange(key, newValue)}
+                isError={isError} 
             />
         </div>
     );
@@ -95,8 +102,8 @@ const renderField = (key, field, value, onFieldChange, t, capabilityId) => {
 /**
  * paramSchema를 받아 동적 폼을 렌더링하는 컴포넌트
  */
-// ✅ 4. capabilityId를 props로 받도록 수정
-const CapabilityForm = ({ schema, capabilityId, config, onChange }) => {
+// --- (이하 코드는 변경 없음) ---
+const CapabilityForm = ({ schema, capabilityId, config, onChange, validationError }) => {
     const { t } = useTranslation();
 
     const handleFieldChange = (key, value) => {
@@ -120,8 +127,7 @@ const CapabilityForm = ({ schema, capabilityId, config, onChange }) => {
     Object.entries(properties).forEach(([key, field]) => {
         const currentValue = config[key];
         
-        // ✅ 5. renderField 호출 시 capabilityId 전달
-        const fieldComponent = renderField(key, field, currentValue, handleFieldChange, t, capabilityId);
+        const fieldComponent = renderField(key, field, currentValue, handleFieldChange, t, capabilityId, validationError);
 
         if (simpleRequired.includes(key)) {
             requiredFields.push(fieldComponent);
