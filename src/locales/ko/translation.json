@@ -119,5 +119,19 @@
   "cron_day_sat": "토",
   "cron_shortcut_weekdays": "평일",
   "cron_shortcut_weekends": "주말",
-  "cron_shortcut_everyday": "매일"
+  "cron_shortcut_everyday": "매일",
+  "task_list_load_error": "작업 목록을 불러오는 데 실패했습니다.",
+  "task_update_error": "작업 상태 변경에 실패했습니다.",
+  "task_name_update_error": "작업 이름 변경에 실패했습니다.",
+  "task_delete_error": "작업 삭제에 실패했습니다.",
+  "task_header_name": "작업 이름",
+  "task_header_status": "상태",
+  "task_header_updated": "최종 수정",
+  "task_header_actions": "관리",
+  "task_item_edit_name_button": "편집",
+  "task_item_save_button": "저장",
+  "task_item_cancel_button": "취소",
+  "task_item_edit_button": "세부 수정",
+  "task_item_delete_button": "삭제",
+  "task_item_delete_confirm": "이 작업을 정말로 삭제하시겠습니까?"
 }

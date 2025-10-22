@@ -24,14 +24,42 @@ const convertHtmlToBackendKey = (html) => {
 };
 
 
-// parseSchema 헬퍼 함수 (변경 없음)
+// --- ✅ [핵심 수정] parseSchema 헬퍼 함수 ---
+// outputSchema가 "properties" 키를 포함하고, "ignored" 키를 존중하도록 수정
 const parseSchema = (schema, logicalPrefix, displayPrefix) => {
-    if (!schema || !schema.properties) return {};
+    if (!schema) return {};
+
+    // --- ✅ 1. ignored 목록 및 properties 목록 가져오기 ---
+    const ignoredKeys = schema.ignored || [];
+    let propertiesToParse = {};
+
+    if (schema.properties) {
+        // 1. 새 형식: schema.properties가 있는 경우
+        propertiesToParse = schema.properties;
+    } else {
+        // 2. 이전 형식: schema.properties가 없고, 객체 자체가 프로퍼티 맵인 경우
+        //    JSON Schema의 표준 키워드(type, required 등)와 'ignored'도 제외합니다.
+        const { type, required, ignored, ...rest } = schema;
+        propertiesToParse = rest;
+    }
+
     const vars = {};
-    for (const [key, value] of Object.entries(schema.properties)) {
+    for (const [key, value] of Object.entries(propertiesToParse)) {
+        
+        // --- ✅ 2. ignored 목록에 있으면 건너뛰기 ---
+        if (ignoredKeys.includes(key)) {
+            continue;
+        }
+
+        // 값이 객체(name, description 등을 포함)가 아닌 경우(예: "type": "object") 건너뜁니다.
+        if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+            continue;
+        }
+
         const logicalKey = `${logicalPrefix}.${key}`;
         const displayName = value.name || key;
         const description = value.description || 'No description available';
+        
         vars[logicalKey] = {
             name: `${displayPrefix} / ${displayName}`,
             description: description,
@@ -133,6 +161,7 @@ const AddTaskPage = () => {
         return translateData(rawModules, i18n.language);
     }, [rawModules, i18n.language]);
 
+    // --- (변수 파싱 useEffect - 수정된 parseSchema를 사용하므로 변경 없음) ---
     useEffect(() => {
         if (currentStep === 0) {
             setAvailableVariables({});
@@ -185,7 +214,10 @@ const AddTaskPage = () => {
         }
         
         schema = capability.paramSchema;
-        const requiredFields = schema.required.filter(key => !key.startsWith('_'));
+        // --- ✅ [수정] required 목록에서 ignored 목록에 있는 키 제외 ---
+        const ignoredKeys = schema.ignored || [];
+        const requiredFields = schema.required.filter(key => !key.startsWith('_') && !ignoredKeys.includes(key));
+        // --- 수정 끝 ---
 
         for (const key of requiredFields) {
             const value = config[key];
@@ -292,7 +324,6 @@ const AddTaskPage = () => {
     };
 
     // --- (handleSaveTask 함수 변경 없음) ---
-    // 이미 작업 이름 검증을 가장 먼저 수행하고 있습니다.
     const handleSaveTask = async () => {
         // 1. 작업 이름 검사
         if (!taskName.trim()) {
@@ -328,9 +359,14 @@ const AddTaskPage = () => {
                 return config;
             }
             const properties = capability.paramSchema.properties;
+            // --- ✅ [수정] ignored 목록 추가 ---
+            const ignoredKeys = capability.paramSchema.ignored || [];
+            // --- 수정 끝 ---
 
             for (const key in rawConfig) {
-                if (Object.prototype.hasOwnProperty.call(rawConfig, key) && properties[key]) {
+                // --- ✅ [수정] ignored된 키는 payload에 포함하지 않음 ---
+                if (Object.prototype.hasOwnProperty.call(rawConfig, key) && properties[key] && !ignoredKeys.includes(key)) {
+                    // --- (이하 로직은 동일) ---
                     const type = properties[key].type;
                     const rawValue = rawConfig[key]; 
 
@@ -378,7 +414,7 @@ const AddTaskPage = () => {
         console.log("Saving Task:", JSON.stringify(payload, null, 2));
 
         try {
-            await api.post('/task/task', payload);
+            await api.post('/task', payload);
             alert(t('task_save_success', '작업이 성공적으로 저장되었습니다!'));
             navigate('/service');
         } catch (err) {
@@ -493,8 +529,6 @@ const AddTaskPage = () => {
                             { currentStep < MAX_ACTIONS && (
                                 <button
                                     className="step-button"
-                                    // --- ✅ [핵심 수정] "다음" 버튼 onClick ---
-                                    // 작업 이름 검증 로직 제거
                                     onClick={() => {
                                         // 1. 현재 스텝 유효성 검사
                                         const missingField = validateStep(currentStep);

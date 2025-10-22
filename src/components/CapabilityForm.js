@@ -6,19 +6,19 @@ import CronBuilder from './CronBuilder';
 
 /**
  * paramSchema의 properties를 기반으로 개별 입력 필드를 렌더링합니다.
+ * (이 함수 자체는 변경되지 않았습니다)
  */
 const renderField = (key, field, value, onFieldChange, t, capabilityId, validationError) => {
 
     const isError = validationError === key;
 
-    // --- ✅ Cron 빌더 특별 처리 ---
+    // --- Cron 빌더 특별 처리 ---
     if (capabilityId === 'schedule_cron' && key === 'cron') {
         return (
             <div className="form-field" key={key}>
                 <label htmlFor={key}>{field.description || key}</label>
                 <CronBuilder
                     id={key}
-                    // --- ✅ [수정] 기본 cron 값을 평일(1,2,3,4,5)에서 '*' (선택 없음)으로 변경 ---
                     value={value || '0 0 12 * * *'} 
                     onChange={(newValue) => onFieldChange(key, newValue)}
                     isError={isError} 
@@ -102,7 +102,6 @@ const renderField = (key, field, value, onFieldChange, t, capabilityId, validati
 /**
  * paramSchema를 받아 동적 폼을 렌더링하는 컴포넌트
  */
-// --- (이하 코드는 변경 없음) ---
 const CapabilityForm = ({ schema, capabilityId, config, onChange, validationError }) => {
     const { t } = useTranslation();
 
@@ -117,14 +116,26 @@ const CapabilityForm = ({ schema, capabilityId, config, onChange, validationErro
         return <p>{t('task_add_no_schema', '설정할 수 있는 항목이 없습니다.')}</p>;
     }
 
-    const { properties, required = [] } = schema;
+    // --- ✅ [핵심 수정] ---
+    // 1. schema에서 properties, required, ignored를 구조분해 할당합니다.
+    const { properties, required = [], ignored = [] } = schema;
+    // --- 수정 끝 ---
 
     const requiredFields = [];
     const optionalFields = [];
 
-    const simpleRequired = required.filter(key => !key.startsWith('_'));
+    // 'ignored'에 포함되지 않은 필수 필드만 필터링합니다.
+    const simpleRequired = required.filter(key => !key.startsWith('_') && !ignored.includes(key));
 
     Object.entries(properties).forEach(([key, field]) => {
+        
+        // --- ✅ [핵심 수정] ---
+        // 2. ignored 배열에 포함된 키는 렌더링하지 않고 건너뜁니다.
+        if (ignored.includes(key)) {
+            return; // continue
+        }
+        // --- 수정 끝 ---
+
         const currentValue = config[key];
         
         const fieldComponent = renderField(key, field, currentValue, handleFieldChange, t, capabilityId, validationError);
