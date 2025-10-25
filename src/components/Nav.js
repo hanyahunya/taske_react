@@ -49,7 +49,7 @@ const Nav = ({ isScrolled, activeSection }) => {
       <div className="nav-container">
         
         <div className="nav-left">
-            <Link to="/" className="logo">TASKE</Link>
+            <Link to="/" className="logo">TASKE (dev.)</Link>
         </div>
 
         {/* isMainPage가 true일 때만 중앙 네비게이션 링크 렌더링 */}

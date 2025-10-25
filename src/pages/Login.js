@@ -35,7 +35,8 @@ const Login = () => {
           localStorage.setItem('accessToken', accessToken);
           navigate('/service');
         } else {
-          alert('로그인에 성공했으나 인증 정보를 받지 못했습니다.');
+          // ✅ [수정] 다국어 적용
+          alert(t('login_success_no_token', '로그인에 성공했으나 인증 정보를 받지 못했습니다.'));
         }
 
       } else if (response.status === 202) {
@@ -45,15 +46,18 @@ const Login = () => {
           setTempToken(twoFactorToken);
           setAuthStep('2fa'); // 화면을 2단계 인증으로 전환
         } else {
-          alert('2단계 인증 정보가 없습니다. 다시 시도해주세요.');
+          // ✅ [수정] 다국어 적용
+          alert(t('login_2fa_no_token', '2단계 인증 정보가 없습니다. 다시 시도해주세요.'));
         }
       }
 
     } catch (error) {
       if (error.response && error.response.status >= 400 && error.response.status < 500) {
-        alert('로그인 실패: 이메일 또는 비밀번호를 확인해주세요.');
+        // ✅ [수정] 다국어 적용
+        alert(t('login_fail_credentials', '로그인 실패: 이메일 또는 비밀번호를 확인해주세요.'));
       } else {
-        alert('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        // ✅ [수정] 다국어 적용
+        alert(t('login_fail_server', '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'));
       }
       console.error('Login error:', error);
     }
@@ -75,18 +79,20 @@ const Login = () => {
           localStorage.setItem('accessToken', accessToken);
           navigate('/service');
         } else {
-           alert('인증에 성공했으나 로그인 정보를 받지 못했습니다.');
+           // ✅ [수정] 다국어 적용
+           alert(t('login_2fa_success_no_token', '인증에 성공했으나 로그인 정보를 받지 못했습니다.'));
         }
       }
     } catch (error) {
-      alert(t('2fa_error'));
+      alert(t('2fa_error')); // 이 부분은 이미 다국어 처리되어 있었습니다.
       console.error('2FA verification error:', error);
     }
   };
 
   const handleForgotPassword = () => {
     // TODO: 비밀번호 찾기 페이지로 리디렉션 또는 모달 창 열기
-    alert('비밀번호 찾기 기능 구현 예정');
+    // ✅ [수정] 다국어 적용
+    alert(t('forgot_password_wip', '비밀번호 찾기 기능은 구현 예정입니다.'));
   }
 
 

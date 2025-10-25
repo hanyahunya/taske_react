@@ -1,8 +1,9 @@
 import axios from 'axios';
+import i18n from '../i18n'; // ✅ i18n 인스턴스 임포트
 
 // 1. 모든 요청에 사용될 기본 인스턴스 (인터셉터 포함)
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://hanyahunya.com/taske/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -11,7 +12,7 @@ const api = axios.create({
 
 // 2. 토큰 갱신 전용으로 사용될 별도의 인스턴스 (인터셉터 없음!)
 const refreshApi = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'https://hanyahunya.com/taske/v1',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -49,8 +50,9 @@ const processQueue = (error, token = null) => {
 
 const handleLogout = () => {
   localStorage.removeItem('accessToken');
-  alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-  window.location.href = '/';
+  // ✅ [수정] i18n.t()를 사용하여 다국어 알림 메시지 표시
+  alert(i18n.t('auth_expired_logout', '인증이 만료되었습니다. 다시 로그인해주세요.'));
+  window.location.href = '/taske';
 };
 
 api.interceptors.response.use(

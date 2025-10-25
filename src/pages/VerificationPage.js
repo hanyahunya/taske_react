@@ -1,43 +1,84 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import api from '../api/axiosConfig'; // 설정해 둔 axios 인스턴스
+import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import api from '../api/axiosConfig';
 
 const VerificationPage = () => {
-  // URL 경로에서 :verificationCode 부분을 추출
-  const { verificationCode } = useParams(); 
-  const [message, setMessage] = useState('인증을 확인하는 중입니다...');
+  const { verificationCode } = useParams();
+  const { t } = useTranslation();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState('loading'); // 'loading', 'success', 'error', 'invalid'
 
   useEffect(() => {
-    // 컴포넌트가 로드될 때 한 번만 실행
     const verifyCode = async () => {
       if (!verificationCode) {
-        setMessage('잘못된 접근입니다.');
+        setStatus('invalid');
+        setIsLoading(false);
         return;
       }
 
       try {
-        // 백엔드에 인증 코드를 담아 POST 또는 GET 요청 (API 명세에 따라 변경)
-        const response = await api.get(`/auth/verify/${verificationCode}`);
-
-        // 백엔드 응답에 따라 메시지 설정
-        if (response.status === 200) {
-          setMessage('이메일 인증이 성공적으로 완료되었습니다!');
-        }
+        await api.get(`/auth/verify/${verificationCode}`);
+        setStatus('success'); // ✅ 성공 시 'success'
       } catch (error) {
-        // 오류 발생 시 (예: 유효하지 않은 코드)
-        setMessage('인증에 실패했습니다. 유효하지 않거나 만료된 링크입니다.');
-        console.error('Verification error:', error);
+        setStatus('error'); // ✅ 실패 시 'error'
+        console.error('Verification error:', error); // 콘솔에 오류는 남김
+      } finally {
+        setIsLoading(false);
       }
     };
 
     verifyCode();
-  }, [verificationCode]); // verificationCode가 변경될 때만 실행되도록 의존성 배열에 추가
+  }, [verificationCode]); // 의존성 배열
+
+  // status에 따라 메시지를 가져옴 (다국어 처리)
+  let message;
+  switch (status) {
+    case 'success':
+      message = t('verify_success', '이메일 인증이 성공적으로 완료되었습니다!');
+      break;
+    case 'error':
+      message = t('verify_fail_invalid', '인증에 실패했습니다. 유효하지 않거나 만료된 링크입니다.');
+      break;
+    case 'invalid':
+      message = t('verify_fail_access', '잘못된 접근입니다.');
+      break;
+    case 'loading':
+    default:
+      message = t('verify_loading', '인증을 확인하는 중입니다...');
+  }
 
   return (
     <div className="auth-container">
       <div className="auth-form">
-        <h2>이메일 인증</h2>
+        <h2>{t('verify_title', '이메일 인증')}</h2>
         <p style={{ marginTop: '20px' }}>{message}</p>
+        
+        {!isLoading && (
+          <>
+            {status === 'success' && (
+              <Link
+                to="/login"
+                className="submit-btn"
+                style={{ marginTop: '30px', textDecoration: 'none' }}
+              >
+                {t('go_to_login_page', '로그인 페이지로 가기')}
+              </Link>
+            )}
+
+            {(status === 'error' || status === 'invalid') && (
+              <Link
+                to="/"
+                className="submit-btn"
+                style={{ marginTop: '30px', textDecoration: 'none' }}
+              >
+                {t('go_to_home_page', '홈 화면으로 이동')}
+              </Link>
+            )}
+          </>
+        )}
+
       </div>
     </div>
   );

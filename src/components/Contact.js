@@ -18,15 +18,15 @@ const Contact = () => {
             <h2>{t('contact_title')}</h2>
             <div className="info-item">
               <h4>{t('contact_email')}</h4>
-              <p>hello@minimal.com</p>
+              <p>java020103@gmail.com</p>
             </div>
-            <div className="info-item">
+            {/* <div className="info-item">
               <h4>{t('contact_phone')}</h4>
               <p>+1 234 567 890</p>
-            </div>
+            </div> */}
             <div className="info-item">
               <h4>{t('contact_location')}</h4>
-              <p>New York, NY</p>
+              <p>Korea, KR</p>
             </div>
           </div>
 

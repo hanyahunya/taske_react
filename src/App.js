@@ -115,7 +115,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <Router basename='/taske'>
       <AppContent />
     </Router>
   );

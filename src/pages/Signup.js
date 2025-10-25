@@ -29,7 +29,7 @@ const Signup = () => {
     e.preventDefault();
 
     if (password !== passwordConfirm) {
-      alert(t('password_mismatch_error'));
+      alert(t('password_mismatch_error')); // 이 부분은 이미 다국어 처리되어 있었습니다.
       return; // 일치하지 않으면 함수 종료
     }
 
@@ -44,15 +44,16 @@ const Signup = () => {
 
       // 2xx 응답 처리
       if (response.status >= 200 && response.status < 300) {
-        alert('회원가입 성공! 로그인 페이지로 이동합니다.');
         setSignupStep('success');
       }
     } catch (error) {
       // 4xx 응답 처리
       if (error.response && error.response.status >= 400 && error.response.status < 500) {
-        alert('회원가입 실패: 이미 사용 중인 이메일이거나 형식이 올바르지 않습니다.');
+        // ✅ [수정] 다국어 적용
+        alert(t('signup_fail_duplicate_or_invalid', '회원가입 실패: 이미 사용 중인 이메일이거나 형식이 올바르지 않습니다.'));
       } else {
-        alert('서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        // ✅ [수정] 다국어 적용
+        alert(t('signup_fail_server', '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'));
       }
       console.error('Signup error:', error);
     }

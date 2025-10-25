@@ -285,7 +285,7 @@ https://www.tooplate.com/view/2141-minimal-white
 
         .hero-content {
             text-align: center;
-            max-width: 800px;
+            max-width: 980px;
             animation: fadeInUp 1s ease;
             position: relative;
             z-index: 2;
@@ -454,10 +454,12 @@ https://www.tooplate.com/view/2141-minimal-white
         }
 
         .quote-block {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
+            font-size: 32px;
+            font-weight: 300;
+            line-height: 1.4;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            word-break: keep-all;
         }
 
         .quote-mark {
@@ -558,6 +560,17 @@ https://www.tooplate.com/view/2141-minimal-white
             letter-spacing: -2px;
             writing-mode: vertical-rl;
             text-orientation: mixed;
+        }
+
+        .philosophy-header h2:lang(ja) {
+            /* 폰트 크기(64px) * 5글자("たちの") = 320px 입니다.
+            이보다 약간 큰 값으로 최대 높이를 제한하여 5글자 이후 줄바꿈을 유도합니다.
+            */
+            font-size: 64px;
+            max-height: 310px;
+            writing-mode: vertical-lr;
+            /* 텍스트가 오른쪽 정렬되도록 설정 (세로 쓰기 기준) */
+            text-align: left; 
         }
 
         .header-decoration {
@@ -1496,7 +1509,12 @@ https://www.tooplate.com/view/2141-minimal-white
             }
 
             .hero h1 {
-                font-size: 48px;
+                font-size: clamp(48px, 8vw, 88px); /* 8vw, 88px -> 7vw, 80px로 수정 */
+                font-weight: 100;
+                letter-spacing: -3px;
+                margin-bottom: 30px;
+                line-height: 0.9;
+                position: relative;
             }
 
             .services-header h2,

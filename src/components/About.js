@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 
 const About = () => {
     const { t } = useTranslation();
@@ -21,17 +21,17 @@ const About = () => {
 
         <div className="stats-grid fade-in">
             <div className="stat-item">
-                <div className="stat-number">98%</div>
+                <div className="stat-number">No-Code</div>
                 <div className="stat-label">{t('stat_satisfaction')}</div>
                 <div className="stat-decoration"></div>
             </div>
             <div className="stat-item">
-                <div className="stat-number">150+</div>
+                <div className="stat-number">1+</div>
                 <div className="stat-label">{t('stat_projects')}</div>
                 <div className="stat-decoration"></div>
             </div>
             <div className="stat-item">
-                <div className="stat-number">12</div>
+                <div className="stat-number">2</div>
                 <div className="stat-label">{t('stat_experience')}</div>
                 <div className="stat-decoration"></div>
             </div>
@@ -44,7 +44,7 @@ const About = () => {
 
         <div className="philosophy-section fade-in">
             <div className="philosophy-header">
-                <h2>{t('philosophy_title')}</h2>
+               <h2><Trans i18nKey="philosophy_title" /></h2>
                 <div className="header-decoration"></div>
             </div>
             <div className="philosophy-content">

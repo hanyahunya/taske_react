@@ -25,8 +25,8 @@ const SocialLogin = () => {
     sessionStorage.setItem('oauth_nonce', nonce);
 
     const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    const redirectUri = 'http://localhost:3000/oauth2/callback/google'; 
-    const scope = 'openid email profile https://www.googleapis.com/auth/youtube.readonly';
+    const redirectUri = 'https://hanyahunya.com/taske/oauth2/callback/google'; 
+    const scope = 'openid email profile';
     const responseType = 'code id_token';
     const access_type= 'offline';
 
@@ -41,7 +41,7 @@ const SocialLogin = () => {
 
     authUrl.searchParams.set('nonce', nonce);
     
-    authUrl.searchParams.set('prompt', 'consent');
+    authUrl.searchParams.set('prompt', 'select_account');
     
     
     window.location.href = authUrl.toString();

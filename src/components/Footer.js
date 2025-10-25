@@ -10,14 +10,6 @@ const Footer = () => {
     <footer className="footer-slim">
       <p>
         {t('footer_text')}{' '}
-        <a
-          href="https://www.tooplate.com"
-          target="_blank"
-          rel="nofollow noopener noreferrer"
-          style={{ color: '#000', fontWeight: 700 }}
-        >
-          Tooplate
-        </a>
       </p>
     </footer>
   );
